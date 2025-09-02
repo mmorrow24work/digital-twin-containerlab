@@ -222,7 +222,8 @@ docker run --rm frrouting/frr:v7.5.1 apk search snmp
 ```
 
 * Version 2
-https://claude.ai/public/artifacts/37990314-c570-4159-82b3-36c80d42e26c
+* https://claude.ai/public/artifacts/37990314-c570-4159-82b3-36c80d42e26c
+* https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/remixed-37990314.md
 
 ## AI Prompt : The Dockerfile in Step 1 and Step 6 are different - please double check everything
 ## AI Response : 
@@ -258,7 +259,8 @@ And it should work without the package errors you encountered earlier.
 
 
 * Version 3
-https://claude.ai/public/artifacts/8e2e1c6e-9a46-464c-84e8-84f6000c3b5b
+* https://claude.ai/public/artifacts/8e2e1c6e-9a46-464c-84e8-84f6000c3b5b
+* https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/remixed-8e2e1c6e.md
 
 ## AI Prompt : docker build works - but I cannot talk to the SNMP agent ...
 
@@ -728,7 +730,8 @@ Anyone following this guide from scratch should now get the same successful resu
 ✅ **Proper startup sequence** with SNMP daemon before FRR daemons
 
 ## Version 4
-https://claude.ai/public/artifacts/d0f0ede2-86d7-4ff4-a9b3-a3cd5fad5446
+* https://claude.ai/public/artifacts/d0f0ede2-86d7-4ff4-a9b3-a3cd5fad5446
+* https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/remixed-d0f0ede2.md
 
 
 ## AI Prompt ... edit snmpd.conf to allow rw access from any ip
@@ -778,7 +781,8 @@ or restart the container if running inside Docker.
 
 ## Version 5
 
-https://claude.ai/public/artifacts/071db517-9c8b-46ec-8a61-5c7b6e4f3290
+* https://claude.ai/public/artifacts/071db517-9c8b-46ec-8a61-5c7b6e4f3290
+* https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/remixed-071db517.md
 
 ## AI Prompt ... please update the guide to edit snmpd.conf to allow rw access from any ip - so I can test from scratch ...
 
@@ -896,7 +900,8 @@ Now the SNMP sysName (OID 1.3.6.1.2.1.1.5.0) will always match the container's a
 
 ## Version 6
 
-https://claude.ai/public/artifacts/a67add8b-77be-425e-bdbc-23df52848ef0
+* https://claude.ai/public/artifacts/a67add8b-77be-425e-bdbc-23df52848ef0
+* https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/remixed-a67add8b.md
 
 ## AI Prompt ... modify the SNMP Configuration, so SNMP traps are sent to PC2,  and update the guide.
 
@@ -972,4 +977,5 @@ The guide now provides complete SNMP monitoring with trap notifications, perfect
 
 ## Version 7
 
-https://claude.ai/public/artifacts/0811cbbe-0fb2-401e-b421-b7a7de675278
+* https://claude.ai/public/artifacts/0811cbbe-0fb2-401e-b421-b7a7de675278
+* https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/remixed-0811cbbe.md
