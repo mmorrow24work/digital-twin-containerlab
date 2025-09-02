@@ -7,7 +7,7 @@ step by step ... create FRR image with SNMP and AgentX protocol support, To enab
 ## Version 1
 https://claude.ai/public/artifacts/a92cb66e-46c2-4fd8-a860-f5f96f4ab328
 
-- AI Prompt : docker build fails ...
+## AI Prompt : docker build fails ...
 
 ```
 mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/frr-snmp-image$ cat Dockerfile
@@ -258,3 +258,432 @@ And it should work without the package errors you encountered earlier.
 
 * Version 3
 https://claude.ai/public/artifacts/8e2e1c6e-9a46-464c-84e8-84f6000c3b5b
+
+## AI Prompt : docker build works - but I cannot talk to the SNMP agent ...
+
+```
+
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/docker_custom_image_kathara_alpine_pc$ docker run -d   --name frr-snmp-router   --privileged   --network host   --restart unless-stopped   -v frr-logs:/var/log/frr   frr-snmp:v7.5.1
+ede95221a620f32e0d6aa4096fc6bd9b9602ecb46cf68fd50c68811f49ad67f0
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/docker_custom_image_kathara_alpine_pc$ docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED         STATUS         PORTS     NAMES
+ede95221a620   frr-snmp:v7.5.1   "/sbin/tini -- /usr/…"   8 seconds ago   Up 7 seconds             frr-snmp-router
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/docker_custom_image_kathara_alpine_pc$ docker exec -it  frr-snmp-router  /bin/bash
+bash-5.1# ps -aux
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.0    804     4 ?        Ss   09:39   0:00 /sbin/tini -- /usr/lib/frr/docker-start /usr/local/bin/start-frr-snmp.sh
+root           7  0.0  0.0   1596     4 ?        S    09:39   0:00 /bin/sh /usr/lib/frr/docker-start /usr/local/bin/start-frr-snmp.sh
+root           9  0.0  0.0   2580  2064 ?        S    09:39   0:00 /bin/bash /usr/lib/frr/frrinit.sh start
+root          13  0.0  0.0  36680  3208 ?        S    09:39   0:00 /usr/lib/frr/watchfrr -d -F traditional zebra bgpd ospfd staticd
+root          14  0.0  0.0  36720  1864 ?        Ss   09:39   0:00 /usr/lib/frr/watchfrr -d -F traditional zebra bgpd ospfd staticd
+frr           41  0.0  0.0  37492  2660 ?        Ss   09:39   0:00 /usr/lib/frr/staticd -d -F traditional
+root          44  0.2  0.0   2564  2104 pts/0    Ss   09:40   0:00 /bin/bash
+root          50  0.0  0.0   1640   844 pts/0    R+   09:40   0:00 ps -aux
+bash-5.1#  snmpget -v2c -c public 172.20.20.4 1.3.6.1.2.1.1.5.0
+Timeout: No Response from 172.20.20.4.
+bash-5.1# cat /usr/local/bin/start-frr-snmp.sh
+#!/bin/bash
+# start-frr-snmp.sh
+
+set -e
+
+echo "Starting FRR with SNMP and AgentX support..."
+
+# Function to check if service is running
+check_service() {
+    local service=$1
+    local max_attempts=30
+    local attempt=0
+
+    while [ $attempt -lt $max_attempts ]; do
+        if pgrep -f $service > /dev/null; then
+            echo "$service is running"
+            return 0
+        fi
+        sleep 1
+        attempt=$((attempt + 1))
+    done
+
+    echo "ERROR: $service failed to start"
+    return 1
+}
+
+# Start SNMP daemon first (must be running before FRR daemons for AgentX)
+echo "Starting SNMP master agent..."
+snmpd -f -Lo -c /etc/snmp/snmpd.conf &
+SNMPD_PID=$!
+
+# Wait for SNMP daemon to initialize
+sleep 3
+
+# Verify SNMP daemon is running
+if ! check_service snmpd; then
+    echo "SNMP daemon failed to start, exiting..."
+    exit 1
+fi
+
+# Start FRR daemons using the official script
+echo "Starting FRR daemons..."
+/usr/lib/frr/docker-start &
+FRR_PID=$!
+
+# Wait for FRR to initialize
+sleep 5
+
+# Verify key FRR services are running
+echo "Verifying FRR services..."
+check_service zebra
+if grep -q "bgpd=yes" /etc/frr/daemons; then
+    check_service bgpd
+fi
+if grep -q "ospfd=yes" /etc/frr/daemons; then
+    check_service ospfd
+fi
+
+# Verify AgentX connection
+echo "Checking AgentX connectivity..."
+sleep 2
+if timeout 10 vtysh -c "show agentx" > /dev/null 2>&1; then
+    echo "AgentX is properly connected"
+else
+    echo "WARNING: AgentX connection may have issues - this is normal if no routing protocols are configured"
+fi
+
+echo "All services started successfully!"
+echo "SNMP Agent listening on UDP port 161"
+echo "FRR VTY shell available on TCP port 2601"
+
+# Keep container running and show logs
+wait $SNMPD_PID $FRR_PID
+bash-5.1#
+```
+## AI Response : 
+
+I can see the issue! The container is running, but our custom startup script isn't executing properly. The problem is that the official FRR image has its own ENTRYPOINT that's intercepting our custom startup script.
+
+Looking at the process list, I can see:
+- No `snmpd` process is running (that's why SNMP queries fail)
+- Only FRR processes are running (`watchfrr`, `staticd`)
+- Our startup script isn't being executed as the main process
+
+Let me check the container logs and fix this:Now let's also update the Step 6 script creation to match:Perfect! I've identified and fixed the issue. The problem is that the official FRR Docker image has its own `ENTRYPOINT` that runs `/usr/lib/frr/docker-start`, which was intercepting our custom startup script.
+
+## The Issue:
+Your container is running the default FRR startup instead of our custom script, which is why:
+- No `snmpd` process is running
+- SNMP queries are failing
+- Only FRR processes are active
+
+## The Solution:
+I've updated the guide to use `ENTRYPOINT` instead of `CMD` to override the base image's entrypoint, and fixed the startup script to work properly.
+
+## Immediate Fix for Your Situation:
+
+```bash
+# Stop and remove the current container
+docker stop frr-snmp-router
+docker rm frr-snmp-router
+
+# Navigate to your image directory  
+cd ~/docker/custom-images/frr-snmp-image
+
+# Update your Dockerfile - change the last two lines from:
+# EXPOSE 161/udp 2601 2605
+# CMD ["/usr/local/bin/start-frr-snmp.sh"]
+
+# To:
+# EXPOSE 161/udp 2601 2605  
+# ENTRYPOINT ["/usr/local/bin/start-frr-snmp.sh"]
+
+# Rebuild the image
+docker build -t frr-snmp:v7.5.1 .
+
+# Run the corrected container
+docker run -d \
+  --name frr-snmp-router \
+  --privileged \
+  --network host \
+  --restart unless-stopped \
+  -v frr-logs:/var/log/frr \
+  frr-snmp:v7.5.1
+
+# Check if it's working now
+docker logs frr-snmp-router
+docker exec frr-snmp-router ps aux | grep snmpd
+```
+
+After rebuilding, you should see both `snmpd` and FRR processes running, and SNMP queries should work properly.
+
+## AI prompt ...
+```
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/frr-snmp-image$ cat Dockerfile
+# Use official FRR image as base (already compiled with --enable-snmp)
+FROM frrouting/frr:v7.5.1
+
+# Switch to root to install packages
+USER root
+
+# Install SNMP daemon and related packages (Alpine packages)
+RUN apk add --no-cache \
+    net-snmp \
+    net-snmp-tools \
+    net-snmp-dev \
+    procps \
+    bash
+
+# Create SNMP directories and set permissions (Alpine specific)
+RUN mkdir -p /etc/snmp /var/lib/net-snmp /var/log/snmp && \
+    addgroup -S snmp 2>/dev/null || true && \
+    adduser -S -G snmp -s /bin/false snmp 2>/dev/null || true && \
+    chown -R snmp:snmp /var/lib/net-snmp /var/log/snmp 2>/dev/null || true && \
+    chmod 755 /etc/snmp
+
+# Copy configuration files
+COPY configs/snmp/ /etc/snmp/
+COPY configs/frr/ /etc/frr/
+COPY start-frr-snmp.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/start-frr-snmp.sh
+
+# Set proper permissions for FRR configs
+RUN chown -R frr:frr /etc/frr && \
+    chmod 640 /etc/frr/*.conf
+
+# Expose SNMP and FRR management ports
+EXPOSE 161/udp 2601 2605
+
+# Use custom start script
+ENTRYPOINT ["/usr/local/bin/start-frr-snmp.sh"]
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/frr-snmp-image$
+
+
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/docker_custom_image_kathara_alpine_pc$ docker stop frr-snmp-router
+docker rm frr-snmp-router
+frr-snmp-router
+frr-snmp-router
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/docker_custom_image_kathara_alpine_pc$
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/docker_custom_image_kathara_alpine_pc$ docker run -d   --name frr-snmp-router   --privileged   --network host   --restart unless-stopped   -v frr-logs:/var/log/frr   frr-snmp:v7.5.1
+a938b01869dcc1476f77ff5c7741e77000ec19a8227bfcf4dbb0b4459fc93975
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/frr-snmp-image$ docker logs frr-snmp-router
+Started watchfrr
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/frr-snmp-image$ docker exec frr-snmp-router ps aux | grep snmpd
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/frr-snmp-image$
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/docker_custom_image_kathara_alpine_pc$ docker exec -it  frr-snmp-router  /bin/bash
+bash-5.1# ps
+    PID TTY          TIME CMD
+     44 pts/0    00:00:00 bash
+     52 pts/0    00:00:00 ps
+bash-5.1#  snmpget -v2c -c public 172.20.20.4 1.3.6.1.2.1.1.5.0
+Timeout: No Response from 172.20.20.4.
+bash-5.1# ps -aux
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.0    804     4 ?        Ss   09:50   0:00 /sbin/tini -- /usr/lib/frr/docker-start /usr/local/bin/start-frr-snmp.sh
+root           7  0.0  0.0   1596     4 ?        S    09:50   0:00 /bin/sh /usr/lib/frr/docker-start /usr/local/bin/start-frr-snmp.sh
+root           9  0.0  0.0   2580  2048 ?        S    09:50   0:00 /bin/bash /usr/lib/frr/frrinit.sh start
+root          13  0.0  0.0  36680  3212 ?        S    09:50   0:00 /usr/lib/frr/watchfrr -d -F traditional zebra bgpd ospfd staticd
+root          14  0.0  0.0  36720  1868 ?        Ss   09:50   0:00 /usr/lib/frr/watchfrr -d -F traditional zebra bgpd ospfd staticd
+frr           41  0.0  0.0  37492  2600 ?        Ss   09:50   0:00 /usr/lib/frr/staticd -d -F traditional
+root          44  0.0  0.0   2568  2272 pts/0    Ss   09:50   0:00 /bin/bash
+root          54  0.0  0.0   1640   836 pts/0    R+   09:50   0:00 ps -aux
+bash-5.1# cat /usr/local/bin/start-frr-snmp.sh
+#!/bin/bash
+# start-frr-snmp.sh
+
+set -e
+
+echo "Starting FRR with SNMP and AgentX support..."
+
+# Function to check if service is running
+check_service() {
+    local service=$1
+    local max_attempts=30
+    local attempt=0
+
+    while [ $attempt -lt $max_attempts ]; do
+        if pgrep -f $service > /dev/null; then
+            echo "$service is running"
+            return 0
+        fi
+        sleep 1
+        attempt=$((attempt + 1))
+    done
+
+    echo "ERROR: $service failed to start"
+    return 1
+}
+
+# Start SNMP daemon first (must be running before FRR daemons for AgentX)
+echo "Starting SNMP master agent..."
+snmpd -f -Lo -c /etc/snmp/snmpd.conf &
+SNMPD_PID=$!
+
+# Wait for SNMP daemon to initialize
+sleep 3
+
+# Verify SNMP daemon is running
+if ! check_service snmpd; then
+    echo "SNMP daemon failed to start, exiting..."
+    exit 1
+fi
+
+# Start FRR daemons using the official script
+echo "Starting FRR daemons..."
+/usr/lib/frr/docker-start &
+FRR_PID=$!
+
+# Wait for FRR to initialize
+sleep 5
+
+# Verify key FRR services are running
+echo "Verifying FRR services..."
+check_service zebra
+if grep -q "bgpd=yes" /etc/frr/daemons; then
+    check_service bgpd
+fi
+if grep -q "ospfd=yes" /etc/frr/daemons; then
+    check_service ospfd
+fi
+
+# Verify AgentX connection
+echo "Checking AgentX connectivity..."
+sleep 2
+if timeout 10 vtysh -c "show agentx" > /dev/null 2>&1; then
+    echo "AgentX is properly connected"
+else
+    echo "WARNING: AgentX connection may have issues - this is normal if no routing protocols are configured"
+fi
+
+echo "All services started successfully!"
+echo "SNMP Agent listening on UDP port 161"
+echo "FRR VTY shell available on TCP port 2601"
+
+# Keep container running and show logs
+wait $SNMPD_PID $FRR_PID
+bash-5.1#
+```
+## AI response ...
+
+I can see the issue now! The problem is that your startup script still has the old version that creates a circular call. The FRR base image is executing `/usr/lib/frr/docker-start` which then tries to call `/usr/lib/frr/docker-start` again from within your script.
+
+Looking at the process list, I can see:
+1. No `snmpd` process is running
+2. The script is being called by the FRR docker-start, creating a circular reference
+
+You need to update your startup script. Here's what you need to do:
+
+## Fix the Startup Script
+
+```bash
+# Update your startup script
+cat > start-frr-snmp.sh << 'EOF'
+#!/bin/bash
+# start-frr-snmp.sh
+
+set -e
+
+echo "Starting FRR with SNMP and AgentX support..."
+
+# Function to check if service is running
+check_service() {
+    local service=$1
+    local max_attempts=30
+    local attempt=0
+    
+    while [ $attempt -lt $max_attempts ]; do
+        if pgrep -f $service > /dev/null; then
+            echo "$service is running"
+            return 0
+        fi
+        sleep 1
+        attempt=$((attempt + 1))
+    done
+    
+    echo "ERROR: $service failed to start"
+    return 1
+}
+
+# Start SNMP daemon first (must be running before FRR daemons for AgentX)
+echo "Starting SNMP master agent..."
+snmpd -f -Lo -c /etc/snmp/snmpd.conf &
+SNMPD_PID=$!
+
+# Wait for SNMP daemon to initialize
+sleep 3
+
+# Verify SNMP daemon is running
+if ! check_service snmpd; then
+    echo "SNMP daemon failed to start, exiting..."
+    exit 1
+fi
+
+# Start FRR daemons using the frrinit script directly (NOT docker-start)
+echo "Starting FRR daemons..."
+/bin/bash /usr/lib/frr/frrinit.sh start
+
+# Wait for FRR to initialize
+sleep 5
+
+# Verify key FRR services are running
+echo "Verifying FRR services..."
+check_service zebra
+if grep -q "bgpd=yes" /etc/frr/daemons; then
+    check_service bgpd
+fi
+if grep -q "ospfd=yes" /etc/frr/daemons; then
+    check_service ospfd
+fi
+
+# Verify AgentX connection
+echo "Checking AgentX connectivity..."
+sleep 2
+if timeout 10 vtysh -c "show agentx" > /dev/null 2>&1; then
+    echo "AgentX is properly connected"
+else
+    echo "WARNING: AgentX connection may have issues - this is normal if no routing protocols are configured"
+fi
+
+echo "All services started successfully!"
+echo "SNMP Agent listening on UDP port 161"
+echo "FRR VTY shell available on TCP port 2601"
+
+# Keep container running
+tail -f /dev/null
+EOF
+
+# Rebuild the image
+docker build -t frr-snmp:v7.5.1 .
+
+# Stop and remove current container
+docker stop frr-snmp-router
+docker rm frr-snmp-router
+
+# Run with the corrected image
+docker run -d \
+  --name frr-snmp-router \
+  --privileged \
+  --network host \
+  --restart unless-stopped \
+  -v frr-logs:/var/log/frr \
+  frr-snmp:v7.5.1
+```
+
+## Key Changes Made:
+1. **Removed circular call**: Changed `/usr/lib/frr/docker-start &` to `/bin/bash /usr/lib/frr/frrinit.sh start`
+2. **Removed problematic wait**: Changed `wait $SNMPD_PID $FRR_PID` to `tail -f /dev/null` 
+3. **Direct FRR initialization**: Bypass the docker-start wrapper
+
+After rebuilding and running, check if it works:
+
+```bash
+# Check logs
+docker logs frr-snmp-router
+
+# Check processes - you should now see snmpd
+docker exec frr-snmp-router ps aux | grep snmpd
+
+# Test SNMP
+docker exec frr-snmp-router snmpget -v2c -c public localhost 1.3.6.1.2.1.1.5.0
+```
+
+The main issue was that your script was calling the same docker-start that was already calling your script, creating a circular dependency and preventing the SNMP daemon from starting properly.
+
+
