@@ -778,3 +778,53 @@ or restart the container if running inside Docker.
 Let me know if you want help crafting a more secure config!
 
 ## AI Prompt ... please update the guide to edit snmpd.conf to allow rw access from any ip - so I can test from scratch ...
+
+## AI response ...
+
+I've updated the guide to allow SNMP read-write access from any IP address. Here are the key changes made:
+
+## Major Updates:
+
+1. **SNMP Configuration (`snmpd.conf`)**:
+   - Changed from `rocommunity public localhost` to `rocommunity public` (any IP)
+   - Changed from `rwcommunity private localhost` to `rwcommunity private` (any IP)
+   - Updated access control from localhost-only to `default` (any source)
+
+2. **Enhanced Testing Section**:
+   - Added remote IP testing examples
+   - Added container IP discovery commands
+   - Added read-write testing with `snmpset`
+   - Added security warnings
+
+3. **Updated Troubleshooting**:
+   - Added remote access debugging steps
+   - Added firewall and network interface checks
+
+4. **Added Security Guidance**:
+   - Clear warnings about allowing access from any IP
+   - Examples of how to restrict to specific networks for production
+   - SNMPv3 configuration suggestions
+
+5. **Added "Quick Test from Scratch" Section**:
+   - Complete step-by-step verification process
+   - Expected results for each test
+
+## Security Note Included:
+The guide now clearly warns that this configuration allows SNMP access from **any IP address** and provides examples of how to restrict access for production:
+
+```bash
+# For production, restrict to specific networks:
+rocommunity public 192.168.1.0/24
+rwcommunity private 10.0.0.0/8
+```
+
+## New Testing Capabilities:
+- Test SNMP from remote systems: `snmpget -v2c -c public <CONTAINER_IP> 1.3.6.1.2.1.1.5.0`
+- Test read-write access: `snmpset -v2c -c private <IP> 1.3.6.1.2.1.1.6.0 s "New Value"`
+- Full verification workflow included
+
+You can now follow the complete guide from scratch and have SNMP working from any IP address while maintaining the AgentX integration with FRR!
+
+https://claude.ai/public/artifacts/071db517-9c8b-46ec-8a61-5c7b6e4f3290
+
+<iframe src="https://claude.site/public/artifacts/071db517-9c8b-46ec-8a61-5c7b6e4f3290/embed" title="Claude Artifact" width="100%" height="600" frameborder="0" allow="clipboard-write" allowfullscreen></iframe>
