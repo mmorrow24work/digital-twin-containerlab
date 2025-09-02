@@ -1,7 +1,11 @@
 # digital-twin-containerlab
 
 * Version 1
-https://claude.ai/public/artifacts/a92cb66e-46c2-4fd8-a860-f5f96f4ab328 
+https://claude.ai/public/artifacts/a92cb66e-46c2-4fd8-a860-f5f96f4ab328
+
+## AI Prompt : step by step ... create FRR image
+
+step by step ... create FRR image with SNMP and AgentX protocol support, To enable AgentX protocol support, FRR must have been build with the --enable-snmp option. Both the master SNMP agent (snmpd) and each of the FRR daemons must be configured. In /etc/snmp/snmpd.conf, the master agentx directive should be added. In each of the FRR daemons, agentx command will enable AgentX support.
 
 * Version 2
 https://claude.ai/public/artifacts/37990314-c570-4159-82b3-36c80d42e26c
@@ -181,6 +185,8 @@ Dockerfile:8
 ERROR: failed to build: failed to solve: process "/bin/sh -c apk add --no-cache     zabbix-agent     iperf3     softflowd     snmp     snmpd     snmp-mibs-downloader     net-snmp-tools     libsnmp-base     libsnmp40     procps" did not complete successfully: exit code: 5
 mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/frr-snmp-image$
 ```
+
+## AI Response :
 
 I see the issue! The official FRR image is based on Alpine Linux, not Ubuntu/Debian, so we need to use the correct Alpine package names. Let me fix the Dockerfile:Now I've updated the guide to work correctly with Alpine Linux (which is what the official FRR image uses). Here's a summary of the key changes made:
 
