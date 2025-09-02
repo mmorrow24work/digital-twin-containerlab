@@ -775,7 +775,9 @@ or restart the container if running inside Docker.
 
 ***
 
-Let me know if you want help crafting a more secure config!
+## Version 5
+
+https://claude.ai/public/artifacts/071db517-9c8b-46ec-8a61-5c7b6e4f3290
 
 ## AI Prompt ... please update the guide to edit snmpd.conf to allow rw access from any ip - so I can test from scratch ...
 
@@ -827,4 +829,146 @@ You can now follow the complete guide from scratch and have SNMP working from an
 
 https://claude.ai/public/artifacts/071db517-9c8b-46ec-8a61-5c7b6e4f3290
 
-<iframe src="https://claude.site/public/artifacts/071db517-9c8b-46ec-8a61-5c7b6e4f3290/embed" title="Claude Artifact" width="100%" height="600" frameborder="0" allow="clipboard-write" allowfullscreen></iframe>
+## AI Prompt ... please modify the SNMP Configuration, so that the sysname ( 1.3.6.1.2.1.1.5.0 ) = the hostname of the container and update the guide.
+
+## AI response ...
+
+Perfect! I've updated the guide to make the SNMP sysName dynamic and automatically reflect the container's hostname. Here are the key changes made:
+
+## Major Updates:
+
+1. **SNMP Configuration (`snmpd.conf`)**:
+   - **Removed**: `sysName "frr-snmp-router"` (hardcoded value)
+   - **Added**: Comment explaining sysName automatically uses container hostname
+   - The SNMP daemon will now use the system hostname by default
+
+2. **FRR Configuration (`frr.conf`)**:
+   - **Removed**: `hostname frr-snmp-router` (hardcoded value)
+   - **Added**: Comment that hostname will be set automatically
+
+3. **Enhanced Testing and Verification**:
+   - Added hostname comparison commands
+   - Updated expected output examples to show dynamic hostnames
+   - Added verification step to confirm sysName matches container hostname
+
+4. **Added Hostname Control Options**:
+   - **Custom hostname**: `docker run --hostname my-custom-router ...`
+   - **Auto-generated**: Docker's default random hostname
+   - Examples showing both scenarios
+
+5. **Updated Configuration Requirements**:
+   - Added note that sysName automatically uses container hostname (no hardcoding needed)
+
+## Benefits of This Change:
+
+- **Dynamic**: sysName automatically reflects actual container hostname
+- **Flexible**: Works with both custom and auto-generated hostnames  
+- **Consistent**: SNMP sysName matches system hostname
+- **Real-world**: Matches how production network devices behave
+
+## New Test Commands:
+
+```bash
+# Check hostname consistency
+docker exec frr-snmp-router hostname
+snmpget -v2c -c public localhost 1.3.6.1.2.1.1.5.0
+
+# Run with custom hostname
+docker run -d --name frr-snmp-router --hostname my-router --privileged --network host frr-snmp:v7.5.1
+```
+
+## Expected Output Examples:
+
+**With custom hostname:**
+```bash
+Container hostname: my-router
+SNMP sysName: SNMPv2-MIB::sysName.0 = STRING: "my-router"
+```
+
+**With auto-generated hostname:**
+```bash
+Container hostname: a938b01869dc  
+SNMP sysName: SNMPv2-MIB::sysName.0 = STRING: "a938b01869dc"
+```
+
+Now the SNMP sysName (OID 1.3.6.1.2.1.1.5.0) will always match the container's actual hostname, making the configuration more dynamic and realistic for production deployments!
+
+## Version 6
+
+https://claude.ai/public/artifacts/a67add8b-77be-425e-bdbc-23df52848ef0
+
+## AI Prompt ... modify the SNMP Configuration, so SNMP traps are sent to PC2,  and update the guide.
+
+## AI response  ... I've updated the comprehensive guide to include SNMP trap functionality that sends traps to PC2. 
+
+Here are the key changes made:
+
+## Major Updates for SNMP Trap Support:
+
+### 1. **SNMP Configuration Enhanced (`snmpd.conf`)**:
+```bash
+# SNMP Trap Configuration - Send traps to PC2
+trap2sink PC2 public           # SNMPv2c traps to PC2
+trap2sink PC2:162 public       # Explicit port 162
+trapcommunity public           # Trap community string
+authtrapenable 1              # Enable auth failure traps
+```
+
+### 2. **Comprehensive Trap Testing**:
+```bash
+# Test trap sending
+docker exec frr-snmp-router snmptrap -v2c -c public PC2 '' 1.3.6.1.4.1.8072.2.3.0.1
+
+# Verify network connectivity to PC2
+docker exec frr-snmp-router ping -c 3 PC2
+
+# Check trap configuration
+docker exec frr-snmp-router grep -E "trap2sink|trapcommunity" /etc/snmp/snmpd.conf
+```
+
+### 3. **PC2 Trap Receiver Setup Instructions**:
+```bash
+# On PC2, start SNMP trap daemon
+sudo snmptrapd -f -Lo
+
+# Check if PC2 is listening for traps
+sudo netstat -ulnp | grep :162
+```
+
+### 4. **Advanced Troubleshooting for Traps**:
+- Network connectivity verification between container and PC2
+- Firewall checking on both container and PC2
+- Alternative IP address configuration
+- Trap daemon setup verification
+
+### 5. **Flexible Configuration Options**:
+```bash
+# Alternative configurations in snmpd.conf:
+trap2sink 192.168.1.100 public     # Send to specific IP
+trap2sink myserver.domain.com public  # Send to hostname
+trapsink PC2 public                # SNMPv1 traps (legacy)
+```
+
+## Key Features Now Supported:
+
+✅ **SNMP queries** (read/write from any IP)  
+✅ **AgentX protocol** (FRR integration)  
+✅ **Dynamic hostname** (sysName matches container hostname)  
+✅ **SNMP traps** (sent to PC2 on port 162)  
+✅ **Comprehensive testing** (queries, traps, AgentX verification)  
+✅ **Production-ready** (security warnings and restrictions provided)
+
+## Expected Trap Output on PC2:
+```bash
+# When snmptrapd is running on PC2:
+2025-09-02 10:15:23 <HOST> [UDP: [x.x.x.x]:xxxxx->[PC2]:162]:
+DISMAN-EVENT-MIB::sysUpTimeInstance = Timeticks: (12345) 2:03:45.00
+SNMPv2-MIB::snmpTrapOID.0 = OID: NET-SNMP-EXAMPLES-MIB::netSnmpExampleHeartbeatNotification
+NET-SNMP-EXAMPLES-MIB::netSnmpExampleHeartbeatRate = STRING: "Test trap from FRR"
+```
+
+The guide now provides complete SNMP monitoring with trap notifications, perfect for network management systems that need to receive alerts from your FRR routing infrastructure. Simply replace "PC2" with your actual trap receiver's IP address or hostname!
+
+## Version 7
+
+https://claude.ai/public/artifacts/0811cbbe-0fb2-401e-b421-b7a7de675278
