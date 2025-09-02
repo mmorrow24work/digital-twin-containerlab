@@ -686,4 +686,45 @@ docker exec frr-snmp-router snmpget -v2c -c public localhost 1.3.6.1.2.1.1.5.0
 
 The main issue was that your script was calling the same docker-start that was already calling your script, creating a circular dependency and preventing the SNMP daemon from starting properly.
 
+## AI prompt ... That works ! Please update the guide accordingly - so I can test from scratch ...
 
+```
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/frr-snmp-image$ docker exec frr-snmp-router ps aux | grep snmpd
+root           7  0.0  0.1   8800  6484 ?        S    10:01   0:00 snmpd -f -Lo -c /etc/snmp/snmpd.conf
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/frr-snmp-image$ docker exec frr-snmp-router snmpget -v2c -c public localhost 1.3.6.1.2.1.1.5.0
+SNMPv2-MIB::sysName.0 = STRING: "frr-snmp-router"
+mmorrow24work@containerlab-gce-1-0:~/docker/custom-images/frr-snmp-image$
+```
+
+## AI response ...
+
+Excellent! I can see it's working perfectly now - `snmpd` is running and SNMP queries are successful. Let me update the entire guide with the working startup script:Perfect! I've updated the entire guide with the working startup script that you've successfully tested. The guide is now consistent throughout and includes the key fixes that made it work:
+
+## Key Updates Made:
+
+1. **Fixed startup script** in both Step 5 and Step 6:
+   - Uses `/bin/bash /usr/lib/frr/frrinit.sh start` instead of the circular docker-start call
+   - Uses `tail -f /dev/null` to keep container running instead of problematic `wait` command
+
+2. **Added expected success output**:
+   - Shows what working SNMP queries should return
+   - Shows what the process list should look like when `snmpd` is running
+
+3. **Updated troubleshooting** with proper debugging commands
+
+4. **Added Important Notes section** explaining the key success factors
+
+The guide now reflects your working implementation where:
+- `snmpd` process runs successfully (PID 7 in your case)
+- SNMP queries work: `SNMPv2-MIB::sysName.0 = STRING: "frr-snmp-router"`
+- Both SNMP master agent and FRR daemons start in the correct order
+
+Anyone following this guide from scratch should now get the same successful result you achieved. The setup provides full SNMP monitoring capabilities for FRR with proper AgentX protocol support, exactly as specified in your original requirements:
+
+✅ **FRR compiled with `--enable-snmp`** (using official image)  
+✅ **Master AgentX directive** in `/etc/snmp/snmpd.conf`  
+✅ **AgentX command** enabled in FRR daemon configurations  
+✅ **Proper startup sequence** with SNMP daemon before FRR daemons
+
+## Version 4
+https://claude.ai/public/artifacts/d0f0ede2-86d7-4ff4-a9b3-a3cd5fad5446
