@@ -8,10 +8,10 @@ At the same time I am also learning how to use GitHub, Docker, AI, and Azure.
 
 I'm using the [issues](https://github.com/mmorrow24work/digital-twin-containerlab/issues) log in to track progress and capture requirements.
 
-I will also use [github wiki](https://github.com/mmorrow24work/digital-twin-containerlab/wiki) for a project blog for now. I'm not sure how best to to that yet - the recommended options are :
+I'm using the README as a blog for now. I'm not sure how best to to that yet - the recommended options are :
 
 1. Start simple with README for essentials.
-1. Use Wiki if you want quick multipage docs/blog with minimal setup.
+1. Use Wiki if you want quick multipage docs/blog with minimal setup -( To use the Wiki feature on a private repo needs GitHub PRO ( Note : 2025/09/03 ) 
 1. For professional blogging, invest in GitHub Pages with Jekyll/Hugo.
 1. Keep blog and docs content in source control to track history.
 1. Link blog prominently from README and Wiki for ease of discovery.
