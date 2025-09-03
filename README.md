@@ -20,19 +20,13 @@ I'm not sure how best to to that yet - the recommended options are :
 
 I will be using AI as much as possible to accelerate things - here's an example of my interactions with [claude.ai](https://claude.ai/) - see [frr-snmp README](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/docker_custom_image/frr-snmp/readme.md)
 
-For the record - here are some links to various resources, I will be using and referring to going forward...
+For the record - here are some links to various resources, I will be using and referring to going forward... [FRRouting github](https://github.com/FRRouting), [Containerlab github](https://github.com/srl-labs/containerlab), [Containerlab-io-draw github](https://github.com/srl-labs/clab-io-draw), [Nokia SR Linux Streaming Telemetry Lab](https://github.com/srl-labs/srl-telemetry-lab), [KatharaFramework github](https://github.com/KatharaFramework)
 
-* [FRRouting github](https://github.com/FRRouting)
-* [Containerlab github](https://github.com/srl-labs/containerlab)
-* [Containerlab-io-draw github](https://github.com/srl-labs/clab-io-draw)
-* [Nokia SR Linux Streaming Telemetry Lab](https://github.com/srl-labs/srl-telemetry-lab)
-* [KatharaFramework github](https://github.com/KatharaFramework)
-
-* [Containerlab](https://containerlab.dev)
-* [Docker](https://docs.docker.com/)
-* [Kathara homepage](https://www.kathara.org/)
-* [Nokia SR Linux - YANG models](https://yang.srlinux.dev)
-* [Nokia SR Linux - DEV](https://srlinux.dev)
+[Containerlab](https://containerlab.dev)
+[Docker](https://docs.docker.com/)
+[Kathara homepage](https://www.kathara.org/)
+[Nokia SR Linux - YANG models](https://yang.srlinux.dev)
+[Nokia SR Linux - DEV](https://srlinux.dev)
 
 ## Blog - 2025/09/02
 
@@ -51,5 +45,5 @@ Note: The containerized Service Router Simulator, known as SR-SIM, is a cloud-na
 * Started using the [issues](https://github.com/mmorrow24work/digital-twin-containerlab/issues) log in github to track progress and capture requirements.
 * Started this blog and exploring github best practices
 * Had a tidy up of this repo to create subfolders for my docker images - which I have previously created using multiple repos for ... having everything under one seems to make more sense
-* Worked on getting SNMP traps to work in Zabbix - see (NOTES)[https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md]
-* Worked on getting SQL backup and restore to work in Zabbix - see (NOTES)[https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md]
+* Worked on getting SNMP traps to work in Zabbix - see [NOTES](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md)
+* Worked on getting SQL backup and restore to work in Zabbix - see [NOTES](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md)
