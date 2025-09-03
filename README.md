@@ -16,6 +16,6 @@ I will also use a blog - but I'm not sure how best to to that yet - the recommen
 1. Keep blog and docs content in source control to track history.
 1. Link blog prominently from README and Wiki for ease of discovery.
 
-I will be using AI as much as possible to accelerate things - here's an example of my interactions with [claude.ai](https://claude.ai/) - [frr-snmp](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/frr-snmp.md).
+I will be using AI as much as possible to accelerate things - here's an example of my interactions with [claude.ai](https://claude.ai/) - see [frr-snmp README]([https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/frr-snmp.md](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/docker_custom_image/frr-snmp/readme.md)).
 
 For the record - here are some links to various resources, I will be using and referring to going forward... [FRRouting github](https://github.com/FRRouting), [containerlab](https://containerlab.dev), [docker](https://docs.docker.com/), [Kathara homepage](https://www.kathara.org/), [KatharaFramework github](https://github.com/KatharaFramework), [containerlab-io-draw github](https://github.com/srl-labs/clab-io-draw), [Nokia SR Linux Streaming Telemetry Lab](https://github.com/srl-labs/srl-telemetry-lab)
