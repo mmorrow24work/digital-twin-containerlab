@@ -19,3 +19,21 @@ I'm using the README as a blog for now. I'm not sure how best to to that yet - t
 I will be using AI as much as possible to accelerate things - here's an example of my interactions with [claude.ai](https://claude.ai/) - see [frr-snmp README](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/docker_custom_image/frr-snmp/readme.md)
 
 For the record - here are some links to various resources, I will be using and referring to going forward... [FRRouting github](https://github.com/FRRouting), [containerlab](https://containerlab.dev), [docker](https://docs.docker.com/), [Kathara homepage](https://www.kathara.org/), [KatharaFramework github](https://github.com/KatharaFramework), [containerlab-io-draw github](https://github.com/srl-labs/clab-io-draw), [Nokia SR Linux Streaming Telemetry Lab](https://github.com/srl-labs/srl-telemetry-lab)
+
+## Blog - 2025/09/02
+
+* After spending several weeks using Kathara I switched over to Containerlab for the following reasons:
+
+1. access to a wide range on containers and VM's from Nokia that will allow us to core and edge of NRTS2 / NRTS3 network
+1. better documentation, ongoing support from Nokia and other vendors
+1. more features
+
+Note: The containerized Service Router Simulator, known as SR-SIM, is a cloud-native version of the SR OS software that runs on hardware platforms. The image can be downloaded from the [Nokia Support Portal](https://customer.nokia.com/support/s/) and requires an active SR-SIM license to operate. I have requested this from Nokia [SROS vSIM license from Nokia - uuidgen email](https://github.com/mmorrow24work/digital-twin-containerlab/issues/1)
+
+* I worked on creating a custom image to [create FRR image with SNMP and AgentX protocol support](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/frr-snmp.md)
+
+## Blog - 2025/09/03
+
+* Started using the [issues](https://github.com/mmorrow24work/digital-twin-containerlab/issues) log in github to track progress and capture requirements.
+* Started this blog and exploring github best practices
+* Had a tidy up of this repo to create subfolders for my docker images - which I have previously created using multiple repos for ... having everything under one seems to make more sense 
