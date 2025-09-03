@@ -22,13 +22,13 @@ I will be using AI as much as possible to accelerate things - here's an example 
 
 For the record - here are some links to various resources, I will be using and referring to going forward...
 
-* github : 
+* github :
 [FRRouting github](https://github.com/FRRouting)
 [Containerlab github](https://github.com/srl-labs/containerlab)
 [Containerlab-io-draw github](https://github.com/srl-labs/clab-io-draw)
 [Nokia SR Linux Streaming Telemetry Lab](https://github.com/srl-labs/srl-telemetry-lab)
 [KatharaFramework github](https://github.com/KatharaFramework)
-* websites :  
+* websites :
 [Containerlab](https://containerlab.dev)
 [Docker](https://docs.docker.com/)
 [Kathara homepage](https://www.kathara.org/)
