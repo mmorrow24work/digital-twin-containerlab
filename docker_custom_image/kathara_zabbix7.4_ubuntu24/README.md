@@ -1,9 +1,13 @@
 # dockerfile used to create the custom docker image used with kathara - zabbix7.4-ubuntu24
 
 Mick Morrow  | Solutions Architect
+
 Email: Mick.Morrow@telent.com
+
 Mobile: 07974398922
+
 Web: www.telent.com
+
 
 I created this dockerfile for the customer docker image I use for my digital twin kathara lab.conf - see extract below :
 
