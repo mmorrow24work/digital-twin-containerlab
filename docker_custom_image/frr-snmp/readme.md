@@ -2,9 +2,7 @@
 
 step by step ... create FRR image with SNMP and AgentX protocol support, To enable AgentX protocol support, FRR must have been build with the --enable-snmp option. Both the master SNMP agent (snmpd) and each of the FRR daemons must be configured. In /etc/snmp/snmpd.conf, the master agentx directive should be added. In each of the FRR daemons, agentx command will enable AgentX support.
 
-## Version 1
-* https://claude.ai/public/artifacts/a92cb66e-46c2-4fd8-a860-f5f96f4ab328
-* https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/remixed-a92cb66e.md
+## [FRR Image Guide Version 1](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/docker_custom_image/frr-snmp/claude.ai-artifacts/remixed-a92cb66e.md)
 
 ## AI Prompt : docker build fails ...
 
