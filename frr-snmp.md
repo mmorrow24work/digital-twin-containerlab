@@ -1,5 +1,3 @@
-# digital-twin-containerlab
-
 ## AI Prompt : step by step ... create FRR image with SNMP and AgentX protocol support
 
 step by step ... create FRR image with SNMP and AgentX protocol support, To enable AgentX protocol support, FRR must have been build with the --enable-snmp option. Both the master SNMP agent (snmpd) and each of the FRR daemons must be configured. In /etc/snmp/snmpd.conf, the master agentx directive should be added. In each of the FRR daemons, agentx command will enable AgentX support.
@@ -979,4 +977,5 @@ The guide now provides complete SNMP monitoring with trap notifications, perfect
 
 * https://claude.ai/public/artifacts/0811cbbe-0fb2-401e-b421-b7a7de675278
 * https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/remixed-0811cbbe.md
+
 
