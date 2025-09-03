@@ -8,7 +8,7 @@ At the same time I am also learning how to use GitHub, Docker, AI, and Azure.
 
 I'm using the [issues](https://github.com/mmorrow24work/digital-twin-containerlab/issues) log in to track progress and capture requirements.
 
-I will also use a blog - but I'm not sure how best to to that yet - the recommended options are :
+I will also use [github wiki](https://github.com/mmorrow24work/digital-twin-containerlab/wiki) for a project blog for now. I'm not sure how best to to that yet - the recommended options are :
 
 1. Start simple with README for essentials.
 1. Use Wiki if you want quick multipage docs/blog with minimal setup.
