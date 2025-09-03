@@ -50,4 +50,6 @@ Note: The containerized Service Router Simulator, known as SR-SIM, is a cloud-na
 
 * Started using the [issues](https://github.com/mmorrow24work/digital-twin-containerlab/issues) log in github to track progress and capture requirements.
 * Started this blog and exploring github best practices
-* Had a tidy up of this repo to create subfolders for my docker images - which I have previously created using multiple repos for ... having everything under one seems to make more sense 
+* Had a tidy up of this repo to create subfolders for my docker images - which I have previously created using multiple repos for ... having everything under one seems to make more sense
+* Worked on getting SNMP traps to work in Zabbix - see (NOTES)[https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md]
+* Worked on getting SQL backup and restore to work in Zabbix - see (NOTES)[https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md]
