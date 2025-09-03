@@ -14,7 +14,7 @@ root@PC2:/#
 
 ### SQL restore in Zabbix
 
-```shell
+```
 root@PC2:/# service zabbix-server stop
  * Stopping Zabbix server zabbix_server                                                                              [ OK ]
 root@PC2:/# gunzip < /home/zabbix_backup.sql.gz | mysql -u zabbix -p zabbix
