@@ -1,6 +1,7 @@
 # NOTES
 
-## SQL backup in Zabbix
+## Zabbix
+### SQL backup in Zabbix
 
 ``` bash
 root@PC2:/# mysqldump -u zabbix -p --single-transaction --quick --lock-tables=false zabbix | gunzip > /home/zabbix_backup.sql.gz
@@ -10,7 +11,7 @@ total 28M
 -rw-r--r-- 1 ubuntu 1001 4.2M Sep  3 20:24 zabbix_backup.sql.gz
 root@PC2:/#
 ```
-## SQL restore in Zabbix
+### SQL restore in Zabbix
 ``` bash
 root@PC2:/# service zabbix-server stop
  * Stopping Zabbix server zabbix_server                                                                              [ OK ]
@@ -18,7 +19,7 @@ root@PC2:/# gunzip < /home/zabbix_backup.sql.gz | mysql -u zabbix -p zabbix
 root@PC2:/# service zabbix-server start
 root@PC2:/#
 ```
-## Containerlab - mounted folders
+### Containerlab - mounted folders
 ``` yml
 
     PC2:
