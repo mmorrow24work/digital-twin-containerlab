@@ -3,7 +3,7 @@
 ## Zabbix
 ### SQL backup in Zabbix
 
-``` bash
+```shell
 root@PC2:/# mysqldump -u zabbix -p --single-transaction --quick --lock-tables=false zabbix | gunzip > /home/zabbix_backup.sql.gz
 root@PC2:/# ls -lh /home
 total 28M
@@ -11,15 +11,19 @@ total 28M
 -rw-r--r-- 1 ubuntu 1001 4.2M Sep  3 20:24 zabbix_backup.sql.gz
 root@PC2:/#
 ```
+
 ### SQL restore in Zabbix
-``` bash
+
+```shell
 root@PC2:/# service zabbix-server stop
  * Stopping Zabbix server zabbix_server                                                                              [ OK ]
 root@PC2:/# gunzip < /home/zabbix_backup.sql.gz | mysql -u zabbix -p zabbix
 root@PC2:/# service zabbix-server start
 root@PC2:/#
 ```
+
 ### Containerlab - mounted folders
+
 ``` yml
 
     PC2:
@@ -36,7 +40,8 @@ root@PC2:/#
       binds:
         - PC2/home:/home
 ```
-``` bash
+
+```shell
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$ ls -l
 total 44
 -rwxr-xr-x  1 mmorrow24work mmorrow24work 1229 Sep  1 23:07 PC-interfaces.sh
