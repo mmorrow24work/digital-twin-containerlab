@@ -37,4 +37,15 @@ mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker compose -f ./docker-compos
  ✔ Network zabbix-docker_frontend                    Removed                                                                       0.6s
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$
 ```
+## From host machine - test external port mapping
 
+```bash
+mickm@mickm-Latitude-7410:~/git/docker_custom_image_kathara_alpine_pc$ snmptrap -v2c -c public localhost:162 '' 1.3.6.1.4.1.12345.1 1.3.6.1.4.1.12345.1.1 s 'External host test'
+
+# Check if it was received
+docker logs zabbix-docker-zabbix-server-1 2>&1 | grep -i trap | tail -3
+    51:20250904:231913.706 unmatched trap received from "172.16.238.1\nUDP:":  [172.16.238.1]:41989->[172.16.238.2]:1162\nDISMAN-EVENT-MIB::sysUpTimeInstance = 5875076\nSNMPv2-MIB::snmpTrapOID.0 = SNMPv2-SMI::enterprises.12345.1\nSNMPv2-SMI::enterprises.12345.1.1 = "aa Test trap message"
+    51:20250904:233002.832 unmatched trap received from "172.16.238.1\nUDP:":  [172.16.238.1]:36490->[172.16.238.2]:1162\nDISMAN-EVENT-MIB::sysUpTimeInstance = 5939978\nSNMPv2-MIB::snmpTrapOID.0 = SNMPv2-SMI::enterprises.12345.1\nSNMPv2-SMI::enterprises.12345.1.1 = "Production trap - 172.16.238.2:1162"
+    51:20250904:233504.891 unmatched trap received from "172.16.238.1\nUDP:":  [172.16.238.1]:53689->[172.16.238.2]:1162\nDISMAN-EVENT-MIB::sysUpTimeInstance = 5970212\nSNMPv2-MIB::snmpTrapOID.0 = SNMPv2-SMI::enterprises.12345.1\nSNMPv2-SMI::enterprises.12345.1.1 = "External host test"
+mickm@mickm-Latitude-7410:~/git/docker_custom_image_kathara_alpine_pc$
+```
