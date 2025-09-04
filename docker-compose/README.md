@@ -41,6 +41,10 @@ mickm@mickm-Latitude-7410:~/git/zabbix-docker$
 
 ```bash
 mickm@mickm-Latitude-7410:~/git/docker_custom_image_kathara_alpine_pc$ snmptrap -v2c -c public localhost:162 '' 1.3.6.1.4.1.12345.1 1.3.6.1.4.1.12345.1.1 s 'External host test'
+```
+
+```bash
+mickm@mickm-Latitude-7410:~/git/docker_custom_image_kathara_alpine_pc$ snmptrap -v2c -c public localhost:162 '' 1.3.6.1.4.1.12345.1 1.3.6.1.4.1.12345.1.1 s 'External host test'
 
 # Check if it was received
 docker logs zabbix-docker-zabbix-server-1 2>&1 | grep -i trap | tail -3
