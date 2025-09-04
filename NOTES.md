@@ -327,54 +327,6 @@ Although using podman compose or podman-compose might be the right way to go, it
 
 I created an [ISSUE](https://github.com/mmorrow24work/digital-twin-containerlab/issues/20) for it - so I don't forget it.
 
-# Containerlab
-
-## Containerlab - start lab
-
-```bash
-mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$ ./run.sh
-14:30:12 INFO Containerlab started version=0.69.3
-14:30:12 INFO Parsing & checking topology file=frr01.clab.yml
-14:30:12 INFO Creating docker network name=clab IPv4 subnet=172.20.20.0/24 IPv6 subnet=3fff:172:20:20::/64 MTU=1500
-14:30:12 INFO Creating lab directory path=/home/mickm/git/containerlab/lab-examples/frr01/clab-frr01
-14:30:12 INFO Creating container name=PC2
-14:30:12 INFO Creating container name=router2
-14:30:12 INFO Creating container name=router3
-14:30:12 INFO Creating container name=PC1
-14:30:12 INFO Creating container name=router1
-14:30:12 INFO Creating container name=PC3
-14:30:13 INFO Created link: PC3:eth1 ▪┄┄▪ router3:eth3
-14:30:13 INFO Created link: router2:eth2 ▪┄┄▪ router3:eth2
-14:30:13 INFO Created link: PC2:eth1 ▪┄┄▪ router2:eth3
-14:30:13 INFO Created link: router1:eth1 ▪┄┄▪ router2:eth1
-14:30:13 INFO Created link: router1:eth2 ▪┄┄▪ router3:eth1
-14:30:13 INFO Created link: PC1:eth1 ▪┄┄▪ router1:eth3
-14:30:13 INFO Adding host entries path=/etc/hosts
-14:30:13 INFO Adding SSH config for nodes path=/etc/ssh/ssh_config.d/clab-frr01.conf
-You are on the latest version (0.69.3)
-╭────────────────────┬─────────────────────────────────┬─────────┬───────────────────╮
-│        Name        │            Kind/Image           │  State  │   IPv4/6 Address  │
-├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
-│ clab-frr01-PC1     │ linux                           │ running │ 172.20.20.3       │
-│                    │ alpine_pc:1.0                   │         │ 3fff:172:20:20::3 │
-├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
-│ clab-frr01-PC2     │ linux                           │ running │ 172.20.20.2       │
-│                    │ praqma/network-multitool:latest │         │ 3fff:172:20:20::2 │
-├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
-│ clab-frr01-PC3     │ linux                           │ running │ 172.20.20.6       │
-│                    │ praqma/network-multitool:latest │         │ 3fff:172:20:20::6 │
-├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
-│ clab-frr01-router1 │ linux                           │ running │ 172.20.20.7       │
-│                    │ frrouting/frr:v7.5.1            │         │ 3fff:172:20:20::7 │
-├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
-│ clab-frr01-router2 │ linux                           │ running │ 172.20.20.5       │
-│                    │ frrouting/frr:v7.5.1            │         │ 3fff:172:20:20::5 │
-├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
-│ clab-frr01-router3 │ linux                           │ running │ 172.20.20.4       │
-│                    │ frrouting/frr:v7.5.1            │         │ 3fff:172:20:20::4 │
-╰────────────────────┴─────────────────────────────────┴─────────┴───────────────────╯
-mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$
-```
 ## Zabbix agent
 
 To configure a Zabbix agent so it can accept connections and send data to any Zabbix server IP, you need to:
@@ -440,6 +392,55 @@ For detailed steps and examples, see Zabbix agent configuration documentation an
 [8](https://gist.github.com/devops-school/64a6b4a8aca5461c48d11d11fbfa901c)
 [9](https://www.zabbix.com/forum/zabbix-help/450578-monitor-agent-host-through-2-ip-addresses)
 
+
+# Containerlab
+
+## Containerlab - start lab
+
+```bash
+mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$ ./run.sh
+14:30:12 INFO Containerlab started version=0.69.3
+14:30:12 INFO Parsing & checking topology file=frr01.clab.yml
+14:30:12 INFO Creating docker network name=clab IPv4 subnet=172.20.20.0/24 IPv6 subnet=3fff:172:20:20::/64 MTU=1500
+14:30:12 INFO Creating lab directory path=/home/mickm/git/containerlab/lab-examples/frr01/clab-frr01
+14:30:12 INFO Creating container name=PC2
+14:30:12 INFO Creating container name=router2
+14:30:12 INFO Creating container name=router3
+14:30:12 INFO Creating container name=PC1
+14:30:12 INFO Creating container name=router1
+14:30:12 INFO Creating container name=PC3
+14:30:13 INFO Created link: PC3:eth1 ▪┄┄▪ router3:eth3
+14:30:13 INFO Created link: router2:eth2 ▪┄┄▪ router3:eth2
+14:30:13 INFO Created link: PC2:eth1 ▪┄┄▪ router2:eth3
+14:30:13 INFO Created link: router1:eth1 ▪┄┄▪ router2:eth1
+14:30:13 INFO Created link: router1:eth2 ▪┄┄▪ router3:eth1
+14:30:13 INFO Created link: PC1:eth1 ▪┄┄▪ router1:eth3
+14:30:13 INFO Adding host entries path=/etc/hosts
+14:30:13 INFO Adding SSH config for nodes path=/etc/ssh/ssh_config.d/clab-frr01.conf
+You are on the latest version (0.69.3)
+╭────────────────────┬─────────────────────────────────┬─────────┬───────────────────╮
+│        Name        │            Kind/Image           │  State  │   IPv4/6 Address  │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-PC1     │ linux                           │ running │ 172.20.20.3       │
+│                    │ alpine_pc:1.0                   │         │ 3fff:172:20:20::3 │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-PC2     │ linux                           │ running │ 172.20.20.2       │
+│                    │ praqma/network-multitool:latest │         │ 3fff:172:20:20::2 │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-PC3     │ linux                           │ running │ 172.20.20.6       │
+│                    │ praqma/network-multitool:latest │         │ 3fff:172:20:20::6 │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-router1 │ linux                           │ running │ 172.20.20.7       │
+│                    │ frrouting/frr:v7.5.1            │         │ 3fff:172:20:20::7 │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-router2 │ linux                           │ running │ 172.20.20.5       │
+│                    │ frrouting/frr:v7.5.1            │         │ 3fff:172:20:20::5 │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-router3 │ linux                           │ running │ 172.20.20.4       │
+│                    │ frrouting/frr:v7.5.1            │         │ 3fff:172:20:20::4 │
+╰────────────────────┴─────────────────────────────────┴─────────┴───────────────────╯
+mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$
+```
 
 ## Containerlab - stop lab
 
