@@ -614,3 +614,93 @@ The default `iperf3` server (`iperf3 -s`) can only handle one client test at a t
 [5](https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/iperf/multi-stream-iperf3/)
 [6](https://iperf.fr/iperf-doc.php)
 [7](https://engineering.qubecinema.com/2020/08/08/load-balancing-iperf3-servers.html)
+
+# Docker 
+
+## Docker stats
+
+When containers show 100% CPU usage but the host CPU usage is low (e.g., 2%), especially on a bare metal host, this usually means:
+
+1. **CPU Usage Measurement Differences:**
+   - Container CPU % is often shown relative to a single CPU core.
+   - If your host has multiple cores, container 100% means fully loaded on one core, but host % is averaged over all cores.
+   - So a container can be pegged at 100% CPU on 1 core while host CPU % remains low overall.
+
+2. **Containers may be CPU bound or running busy loops:**
+   - Container workloads might be maxing out CPU on one or more cores.
+   - Inspect container processes for infinite loops or polling.
+
+3. **No resource limits by default:**
+   - By default, containers can use **all available CPU** on the host.
+   - If you want to **limit** container CPU usage or allocate more resources, Docker/Podman allows setting CPU constraints.
+
+***
+
+### How to Allocate or Limit CPU resources to containers
+
+- Docker run options to limit or allocate CPUs:
+
+| Option           | Description                                         | Example                            |
+|------------------|-----------------------------------------------------|----------------------------------|
+| `--cpus`         | Limit number of CPUs available to container          | `--cpus="2.5"` (2 and a half CPUs) |
+| `--cpu-shares`   | Relative CPU weight (default 1024)                     | `--cpu-shares=512` (half priority) |
+| `--cpuset-cpus`  | Pin container to specific CPUs                          | `--cpuset-cpus="0,1"` (cores 0 and 1) |
+
+Example:
+
+```bash
+docker run --cpus="1.5" ...
+```
+
+- Podman supports similar flags.
+
+***
+
+### Additional tips:
+
+- Monitor container CPU usage with:
+  ```bash
+  docker stats
+  ```
+- Investigate process inside container (e.g., top, htop).
+- Optimize application workload to avoid busy waiting.
+- On bare metal, containers may compete for CPU differently than VMs, causing high usage visible on containers but low averaged host load.
+- You can also assign CPU quotas and shares to control container CPU usage more granularly.
+- Monitor for runaway processes or scripts inside containers.
+
+***
+
+### Summary
+
+- Containers by default can use all CPUs on the host unless limited.
+- 100% CPU in container usually means one core is fully utilized.
+- Limit CPU allocation using Docker `--cpus`, `--cpu-shares`, or `--cpuset-cpus`.
+- Monitor and optimize container workloads for CPU usage.
+
+This explains why your containers may show full CPU utilization independently of low host-wide average CPU load and how to allocate or constrain resources effectively.[1][4][5][8]
+
+[1](https://stackoverflow.com/questions/53322102/docker-container-cpu-usage-exceeds-100-sometimes-when-streaming-from-docker-st)
+[2](https://answers.ros.org/question/298364)
+[3](https://forums.docker.com/t/dockerd-using-100-cpu/94962)
+[4](https://www.reddit.com/r/docker/comments/uy8nvn/docker_and_using_maximum_cpu_from_host_in_a/)
+[5](https://phoenixnap.com/kb/docker-memory-and-cpu-limit)
+[6](https://www.scoutapm.com/blog/docker-performance)
+[7](https://github.com/docker/for-mac/issues/7643)
+[8](https://community.adminforge.de/t/troubleshooting-high-cpu-usage-in-docker-containers-on-linux/828)
+[9](https://www.atlantic.net/dedicated-server-hosting/how-to-check-docker-container-ram-and-cpu-usage/)
+
+### Example docker stats
+
+```bash
+mickm@mickm-Latitude-7410:~$ docker stats
+CONTAINER ID   NAME                                     CPU %     MEM USAGE / LIMIT     MEM %     NET I/O          BLOCK I/O         PIDS
+3bac7ee40d45   clab-frr01-router1                       0.27%     17.09MiB / 15.29GiB   0.11%     476kB / 1.13MB   4.1kB / 152kB     17
+e01a5f87795e   clab-frr01-router3                       0.13%     17.13MiB / 15.29GiB   0.11%     480kB / 1.14MB   4.1kB / 168kB     17
+4155ed1d3cde   clab-frr01-router2                       0.30%     17.07MiB / 15.29GiB   0.11%     469kB / 1.11MB   0B / 160kB        17
+f1541e0f9a06   clab-frr01-PC1                           0.09%     13.38MiB / 15.29GiB   0.09%     587MB / 1.13MB   139kB / 69.6kB    15
+f75c1930d1e5   clab-frr01-PC3                           0.06%     12.72MiB / 15.29GiB   0.08%     490kB / 197MB    209kB / 69.6kB    14
+5c10a64d718d   clab-frr01-PC2                           0.11%     13.42MiB / 15.29GiB   0.09%     473kB / 392MB    0B / 73.7kB       15
+35b052a9d407   zabbix-docker-zabbix-server-1            0.39%     66.7MiB / 1GiB        6.51%     976MB / 52.3MB   9.83MB / 16.4kB   84
+ff4d059fc199   zabbix-docker-zabbix-web-nginx-mysql-1   18.69%    255.7MiB / 512MiB     49.93%    248MB / 178MB    26MB / 28.7kB     22
+2e207fec6db8   zabbix-docker-mysql-server-1             3.43%     716.9MiB / 15.29GiB   4.58%     160MB / 1.2GB    104MB / 3.55GB    71
+```
