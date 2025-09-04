@@ -193,7 +193,7 @@ mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker compose -f ./docker-compos
  ✔ Container zabbix-docker-zabbix-server-1           Started                                                                                                                                                                                        6.3s 
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ 
 ```
-### Zabbix - Stop/start using docker compose
+### Zabbix - inside the container
 ```bash
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker ps
 CONTAINER ID   IMAGE                                             COMMAND                  CREATED          STATUS                    PORTS                                                                                NAMES
@@ -238,5 +238,50 @@ exit
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ 
 ```
 ### Zabbix web UI - [Zabbix - localhost](http://localhost)
+### Zabbix environment variables
+```bash
+mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ ls -al
+total 112
+drwxrwxr-x 3 mickm mickm  4096 Sep  4 07:21 .
+drwxrwxr-x 9 mickm mickm  4096 Sep  4 07:25 ..
+-rw-rw-r-- 1 mickm mickm 28423 Sep  4 07:21 chrome_dp.json
+-rw-rw-r-- 1 mickm mickm  1152 Sep  4 07:21 .env_agent
+-rw-rw-r-- 1 mickm mickm   395 Sep  4 07:21 .env_db_mysql
+-rw-rw-r-- 1 mickm mickm   451 Sep  4 07:21 .env_db_mysql_proxy
+-rw-rw-r-- 1 mickm mickm   339 Sep  4 07:21 .env_db_pgsql
+-rw-rw-r-- 1 mickm mickm   162 Sep  4 07:21 .env_java
+-rw-rw-r-- 1 mickm mickm  2581 Sep  4 07:21 .env_prx
+-rw-rw-r-- 1 mickm mickm   443 Sep  4 07:21 .env_prx_mysql
+-rw-rw-r-- 1 mickm mickm    36 Sep  4 07:21 .env_prx_sqlite3
+-rw-rw-r-- 1 mickm mickm   254 Sep  4 07:21 .env_snmptraps
+-rw-rw-r-- 1 mickm mickm  3621 Sep  4 07:21 .env_srv
+-rw-rw-r-- 1 mickm mickm  2104 Sep  4 07:21 .env_web
+-rw-rw-r-- 1 mickm mickm   254 Sep  4 07:21 .env_web_service
+drwxrwxr-x 2 mickm mickm  4096 Sep  4 07:21 mysql_init
+-rw-rw-r-- 1 mickm mickm     6 Sep  4 07:21 .MYSQL_PASSWORD
+-rw-rw-r-- 1 mickm mickm     8 Sep  4 07:21 .MYSQL_ROOT_PASSWORD
+-rw-rw-r-- 1 mickm mickm     4 Sep  4 07:21 .MYSQL_ROOT_USER
+-rw-rw-r-- 1 mickm mickm     6 Sep  4 07:21 .MYSQL_USER
+-rw-rw-r-- 1 mickm mickm     6 Sep  4 07:21 .POSTGRES_PASSWORD
+-rw-rw-r-- 1 mickm mickm     6 Sep  4 07:21 .POSTGRES_USER
+mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ more .MYSQL*
+::::::::::::::
+.MYSQL_PASSWORD
+::::::::::::::
+zabbix
+::::::::::::::
+.MYSQL_ROOT_PASSWORD
+::::::::::::::
+root_pwd
+::::::::::::::
+.MYSQL_ROOT_USER
+::::::::::::::
+root
+::::::::::::::
+.MYSQL_USER
+::::::::::::::
+zabbix
+mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ 
+```
 
 
