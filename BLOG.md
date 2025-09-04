@@ -1,3 +1,11 @@
+I'm not sure how best to blog yet - the recommended options are :
+
+1. Start simple with README for essentials.
+1. Use Wiki if you want quick multipage docs/blog with minimal setup - I found that to use the Wiki feature on a private repo needs GitHub PRO ( Note : 2025/09/03 ) 
+1. For professional blogging, invest in GitHub Pages with Jekyll/Hugo.
+1. Keep blog and docs content in source control to track history.
+1. Link blog prominently from README and Wiki for ease of discovery.
+  
 # 2025/09/02
 
 * After spending several weeks using Kathara I switched over to Containerlab for the following reasons:
@@ -18,7 +26,7 @@
 * Worked on getting SQL backup and restore to work in Zabbix - see [NOTES](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md)
 * End day 22.00
  
-## 2025/09/03
+# 2025/09/03
 
 * Start day 07.00
 * Had a re-think ! Instead of creating custom images for Zabbix and including the Zabbix container in my containerlab network - switch to the standard docker containers and attach them to my containerlab networks
