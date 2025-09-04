@@ -146,6 +146,97 @@ CONTAINER ID   IMAGE                                             COMMAND        
 9a9f618f8ef4   zabbix/zabbix-web-nginx-mysql:alpine-7.4-latest   "docker-entrypoint.sh"   46 seconds ago   Up 12 seconds (healthy)   0.0.0.0:80->8080/tcp, [::]:80->8080/tcp, 0.0.0.0:443->8443/tcp, [::]:443->8443/tcp   zabbix-docker-zabbix-web-nginx-mysql-1
 6cf5a525e3a1   zabbix/zabbix-server-mysql:alpine-7.4-latest      "/usr/bin/docker-ent…"   46 seconds ago   Up 12 seconds             0.0.0.0:10051->10051/tcp, :::10051->10051/tcp                                        zabbix-docker-zabbix-server-1
 32094b0289d9   mysql:8.4-oracle                                  "docker-entrypoint.s…"   47 seconds ago   Up 46 seconds                                                                                                  zabbix-docker-mysql-server-1
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker images
+REPOSITORY                      TAG                 IMAGE ID       CREATED         SIZE
+zabbix/zabbix-server-mysql      alpine-7.4-latest   8d6cd3b7c658   9 days ago      110MB
+zabbix/zabbix-web-nginx-mysql   alpine-7.4-latest   69d382bd8ad7   9 days ago      282MB
+zabbix7.4_frr                   1.0                 98a38a8e5c40   12 days ago     1.09GB
+<none>                          <none>              75789162b0d1   12 days ago     1.06GB
+kathara_zabbix7.4-ubuntu24      1.0                 c0e192409cc4   13 days ago     803MB
+alpine_pc                       1.0                 558f54e8cfe4   13 days ago     24MB
+ubuntu                          24.04               e0f16e6366fe   5 weeks ago     78.1MB
+mysql                           8.4-oracle          45f1b9da918e   6 weeks ago     786MB
+alpine                          latest              9234e8fb04c4   7 weeks ago     8.31MB
+kathara/frr                     latest              0fbf3877a39c   6 months ago    1.06GB
+kathara/base                    latest              54609bfdb680   7 months ago    1.02GB
+busybox                         latest              0ed463b26dae   11 months ago   4.43MB
+kathara/quagga                  latest              62dd101dfa28   23 months ago   1.09GB
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$
+```
+### Zabbix - Stop/start using docker compose
+```bash
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker compose -f ./docker-compose_v3_alpine_mysql_latest.yaml down
+[+] Running 10/10
+ ✔ Container zabbix-docker-zabbix-server-1           Removed                                                                                                                                                                                        0.7s 
+ ✔ Container zabbix-docker-zabbix-web-nginx-mysql-1  Removed                                                                                                                                                                                        1.2s 
+ ✔ Container zabbix-docker-db-data-mysql-1           Removed                                                                                                                                                                                        0.0s 
+ ✔ Container zabbix-docker-server-db-init-1          Removed                                                                                                                                                                                        0.0s 
+ ✔ Container zabbix-docker-mysql-server-1            Removed                                                                                                                                                                                        1.1s 
+ ✔ Network zabbix-docker_default                     Removed                                                                                                                                                                                        0.8s 
+ ✔ Network zabbix-docker_database                    Removed                                                                                                                                                                                        0.1s 
+ ✔ Network zabbix-docker_frontend                    Removed                                                                                                                                                                                        0.3s 
+ ✔ Network zabbix-docker_tools_frontend              Removed                                                                                                                                                                                        0.5s 
+ ✔ Network zabbix-docker_backend                     Removed                                                                                                                                                                                        0.4s 
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker compose -f ./docker-compose_v3_alpine_mysql_latest.yaml up -d
+[+] Running 10/10
+ ✔ Network zabbix-docker_frontend                    Created                                                                                                                                                                                        0.1s 
+ ✔ Network zabbix-docker_tools_frontend              Created                                                                                                                                                                                        0.1s 
+ ✔ Network zabbix-docker_backend                     Created                                                                                                                                                                                        0.1s 
+ ✔ Network zabbix-docker_default                     Created                                                                                                                                                                                        0.1s 
+ ✔ Network zabbix-docker_database                    Created                                                                                                                                                                                        0.1s 
+ ✔ Container zabbix-docker-db-data-mysql-1           Started                                                                                                                                                                                        0.2s 
+ ✔ Container zabbix-docker-mysql-server-1            Started                                                                                                                                                                                        0.2s 
+ ✔ Container zabbix-docker-server-db-init-1          Exited                                                                                                                                                                                         5.9s 
+ ✔ Container zabbix-docker-zabbix-web-nginx-mysql-1  Started                                                                                                                                                                                        6.2s 
+ ✔ Container zabbix-docker-zabbix-server-1           Started                                                                                                                                                                                        6.3s 
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ 
+```
+### Zabbix - Stop/start using docker compose
+```bash
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker ps
+CONTAINER ID   IMAGE                                             COMMAND                  CREATED          STATUS                    PORTS                                                                                NAMES
+9a9f618f8ef4   zabbix/zabbix-web-nginx-mysql:alpine-7.4-latest   "docker-entrypoint.sh"   46 seconds ago   Up 12 seconds (healthy)   0.0.0.0:80->8080/tcp, [::]:80->8080/tcp, 0.0.0.0:443->8443/tcp, [::]:443->8443/tcp   zabbix-docker-zabbix-web-nginx-mysql-1
+6cf5a525e3a1   zabbix/zabbix-server-mysql:alpine-7.4-latest      "/usr/bin/docker-ent…"   46 seconds ago   Up 12 seconds             0.0.0.0:10051->10051/tcp, :::10051->10051/tcp                                        zabbix-docker-zabbix-server-1
+32094b0289d9   mysql:8.4-oracle                                  "docker-entrypoint.s…"   47 seconds ago   Up 46 seconds                                                                                                  zabbix-docker-mysql-server-1
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker exec -it zabbix-docker-zabbix-server-1 bash 
+d949ca9b1089:~$ uname -a
+Linux d949ca9b1089 6.14.0-28-generic #28~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 25 10:47:01 UTC 2 x86_64 Linux
+d949ca9b1089:~$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+41: eth1@if42: <BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN> mtu 1500 qdisc noqueue state UP 
+    link/ether 02:42:ac:10:f0:02 brd ff:ff:ff:ff:ff:ff
+    inet 172.16.240.2/24 brd 172.16.240.255 scope global eth1
+       valid_lft forever preferred_lft forever
+49: eth2@if50: <BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN> mtu 1500 qdisc noqueue state UP 
+    link/ether 02:42:ac:10:ef:03 brd ff:ff:ff:ff:ff:ff
+    inet 172.16.239.3/24 brd 172.16.239.255 scope global eth2
+       valid_lft forever preferred_lft forever
+51: eth3@if52: <BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN> mtu 1500 qdisc noqueue state UP 
+    link/ether 02:42:ac:13:00:04 brd ff:ff:ff:ff:ff:ff
+    inet 172.19.0.4/16 brd 172.19.255.255 scope global eth3
+       valid_lft forever preferred_lft forever
+53: eth0@if54: <BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN> mtu 1500 qdisc noqueue state UP 
+    link/ether 02:42:ac:10:ee:03 brd ff:ff:ff:ff:ff:ff
+    inet 172.16.238.3/24 brd 172.16.238.255 scope global eth0
+       valid_lft forever preferred_lft forever
+d949ca9b1089:~$ ip r
+default via 172.16.238.1 dev eth0 
+172.16.238.0/24 dev eth0 scope link  src 172.16.238.3 
+172.16.239.0/24 dev eth2 scope link  src 172.16.239.3 
+172.16.240.0/24 dev eth1 scope link  src 172.16.240.2 
+172.19.0.0/16 dev eth3 scope link  src 172.19.0.4 
+d949ca9b1089:~$ exit
+exit
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$ 
+```
+### Zabbix web UI - [Zabbix - localhost](http://localhost)
 
 
