@@ -8,7 +8,7 @@ At the same time I am also learning how to use GitHub, Docker, AI, and Azure.
 
 I'm using [ISSUES](https://github.com/mmorrow24work/digital-twin-containerlab/issues) to track progress and capture requirements, and I'm using this [BLOG](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/BLOG.md) to record my progress for now. 
 
-I will be using AI as much as possible to accelerate things - here's an example of my interactions with [claude.ai](https://claude.ai/) - see [frr-snmp README](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/docker_custom_image/frr-snmp/readme.md)
+I will be using AI as much as possible to accelerate things - here's an example of my interactions with [claude.ai](https://claude.ai/) - see [frr-snmp AI interaction](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/docker_custom_image/frr-snmp/AI.md)
 
 For the record - here are some links to various resources, I will be using and referring to going forward...
 
