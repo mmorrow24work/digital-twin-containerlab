@@ -467,9 +467,9 @@ This method simulates SNMP events in test setups or for integration checks with 
 [9](http://www.net-snmp.org/tutorial/tutorial-5/commands/snmptrap.html)
 [10](https://knowledge.broadcom.com/external/article/57331/how-to-manually-generate-traps-and-test.html)
 
-# IPERF3 examples
+# Iperf3 examples
 
-## Connect to a container and enter server mode to listen for incoming packets
+## Iperf3 - server recieves packets
 
 ```bash
 mickm@mickm-Latitude-7410:~$ docker exec -it clab-frr01-PC1 bash
@@ -517,11 +517,9 @@ Accepted connection from 3fff:172:20:20::6, port 47692
 -----------------------------------------------------------
 ```
 
-## Connect to a container and enter cleint mode to send for outgoing packets
+## Iperf3 - client sends packets
 
 ```bash
-mickm@mickm-Latitude-7410:~$ docker exec -it clab-frr01-PC2 bash
-PC2:/#
 mickm@mickm-Latitude-7410:~$ docker exec -it clab-frr01-PC2 bash
 PC2:/# iperf3 -c PC1 -u -b 50M -t 30
 Connecting to host PC1, port 5201
