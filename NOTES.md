@@ -258,6 +258,7 @@ Although using podman compose or podman-compose might be the right way to go, it
 
 I created an [ISSUE](https://github.com/mmorrow24work/digital-twin-containerlab/issues/20) for it - so I don't forget it.
 
+# Containerlab
 
 ## Containerlab - start lab
 
@@ -365,3 +366,51 @@ total 28096
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
 ```
 
+# SNMP 
+
+A **test SNMP trap** can be sent from the command line using the `snmptrap` utility, which is part of the `net-snmp` package on Linux systems. This command helps simulate SNMP events for monitoring or troubleshooting.[1][2]
+
+## Example SNMP Trap Command
+
+Here’s a common test SNMP trap for SNMP v2c:
+
+```
+snmptrap -v 2c -c public 127.0.0.1 '' SNMPv2-MIB::coldStart SNMPv2-MIB::sysName.0 s "MyDevice"
+```
+- `-v 2c` specifies SNMP version 2c.
+- `-c public` sets the community string.
+- `127.0.0.1` is the destination IP address (the trap receiver, often localhost for tests).
+- `''` is a required but empty uptime field.
+- `SNMPv2-MIB::coldStart` is the trap OID.
+- `SNMPv2-MIB::sysName.0 s "MyDevice"` passes a variable (sysName) with type string and value "MyDevice".[3][2][1]
+
+## SNMP Trap with a Custom OID
+
+To send a trap using a specific OID, for example, for printer alerts:
+```
+snmptrap -v 2c -c public 127.0.0.1 '' .1.3.6.1.2.1.43.18.2.0.1
+```
+You must provide all required variable bindings per the trap specification.[4]
+
+## Notes
+- Ensure `snmptrap` is installed (`sudo apt install snmp snmptrapd` on Debian/Ubuntu).
+- Make sure your SNMP trap daemon is running and configured to listen on the correct address and port.[1]
+- SNMP v3 traps require more authentication and encryption options.[3]
+
+## Troubleshooting
+- Confirm the correct community string and IP.
+- Verify your firewall allows UDP SNMP traffic (default port 162 for traps).
+- Check `snmptrapd` or another SNMP manager for received traps.[2][1]
+
+This method simulates SNMP events in test setups or for integration checks with SNMP-based monitoring systems.[2][1]
+
+[1](https://www.baeldung.com/linux/snmp-trap-send)
+[2](https://stackoverflow.com/questions/49857532/can-snmp-trap-be-faked)
+[3](https://support.nagios.com/kb/article/snmp-trap-how-to-send-a-test-trap-493.html)
+[4](https://stackoverflow.com/questions/37119903/send-a-notification-trap-snmp-with-snmptrap-command-linux)
+[5](https://community.splunk.com/t5/Deployment-Architecture/How-to-send-snmp-traps-from-my-Linux-machine-to-a-Splunk-indexer/m-p/145240)
+[6](https://techkluster.com/linux/snmp-trap-send/)
+[7](https://stackoverflow.com/questions/19947680/what-is-the-correct-snmptrap-command-format)
+[8](https://www.ibm.com/docs/sv/ssw_aix_72/s_commands/snmptrap.html)
+[9](http://www.net-snmp.org/tutorial/tutorial-5/commands/snmptrap.html)
+[10](https://knowledge.broadcom.com/external/article/57331/how-to-manually-generate-traps-and-test.html)
