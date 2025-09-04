@@ -65,6 +65,23 @@ root@PC2:/# exit
 exit
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
 ```
+## SQL backup in Zabbix - delta
+
+Using the default Zabbix MySQL container, I had to run the backps as user ```root```, not user ```zabbix```
+
+```bash
+bash-5.1# mariadb-dump -u zabbix -p --single-transaction --quick --lock-tables=false zabbix | gzip > /home/zabbix_backup.sql.gz
+bash: mariadb-dump: command not found
+bash-5.1# mysqldump -u zabbix -p --single-transaction --quick --lock-tables=false zabbix | gzip > /home/zabbix_backup.sql.gz
+Enter password:
+mysqldump: Error: 'Access denied; you need (at least one of) the PROCESS privilege(s) for this operation' when trying to dump tablespaces
+bash-5.1# mysqldump -u root -p --single-transaction --quick --lock-tables=false zabbix | gzip > /home/zabbix_backup.sql.gz
+Enter password:
+bash-5.1# ls -ltrh /home
+total 4.5M
+-rw-r--r-- 1 root root 4.5M Sep  4 15:34 zabbix_backup.sql.gz
+bash-5.1#
+```
 
 ## SQL restore in Zabbix
 
