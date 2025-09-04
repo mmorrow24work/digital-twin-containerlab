@@ -28,47 +28,6 @@ exit
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
 ```
 
-## Containerlab - mounted folders config
-
-```yml
-
-    PC2:
-      kind: linux
-      image: zabbix:1.0
-      ports:
-      - "8080:80"
-      - "8443:443"
-      - "10051:10051"
-      - "10050:10050"
-      dns:
-        servers:
-          - "1.1.1.1"
-      binds:
-        - PC2/home:/home
-```
-
-## Containerlab - mounted folders from host
-
-```bash
-mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$ ls -l
-total 44
--rwxr-xr-x  1 mmorrow24work mmorrow24work 1229 Sep  1 23:07 PC-interfaces.sh
-drwxr-xr-x  3 mmorrow24work mmorrow24work 4096 Sep  3 19:18 PC2
--rwxr-xr-x  1 mmorrow24work mmorrow24work  516 Sep  1 17:16 README.md
-drwxrwxr-x+ 3 root          mmorrow24work 4096 Sep  1 17:18 clab-frr01
--rwxr-xr-x  1 mmorrow24work mmorrow24work 1271 Sep  3 19:52 frr01.clab.yml
-drwxr-xr-x  2 mmorrow24work mmorrow24work 4096 Sep  1 17:16 router1
-drwxr-xr-x  2 mmorrow24work mmorrow24work 4096 Sep  1 17:16 router2
-drwxr-xr-x  2 mmorrow24work mmorrow24work 4096 Sep  1 23:06 router3
--rwxr-xr-x  1 mmorrow24work mmorrow24work  229 Sep  1 23:39 routers-snmp.sh
--rwxr-xr-x  1 mmorrow24work mmorrow24work   64 Sep  1 23:55 run.sh
-mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$ ls -l PC2/home/
-total 28096
--rw-r--r-- 1 mmorrow24work mmorrow24work 24444013 Sep  3 20:27 2_zabbix_backup.sql
--rw-r--r-- 1 mmorrow24work mmorrow24work  4321895 Sep  3 20:24 zabbix_backup.sql.gz
-mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
-```
-
 ## Zabbix - Install using docker compose
 
 ```bash
@@ -298,3 +257,111 @@ mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$
 Although using podman compose or podman-compose might be the right way to go, it didn't work first time for me - so I decided to park this to avoid getting pulled down yet another rabbit hole !!
 
 I created an [ISSUE](https://github.com/mmorrow24work/digital-twin-containerlab/issues/20) for it - so I don't forget it.
+
+
+## Containerlab - start lab
+
+```bash
+mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$ ./run.sh
+14:30:12 INFO Containerlab started version=0.69.3
+14:30:12 INFO Parsing & checking topology file=frr01.clab.yml
+14:30:12 INFO Creating docker network name=clab IPv4 subnet=172.20.20.0/24 IPv6 subnet=3fff:172:20:20::/64 MTU=1500
+14:30:12 INFO Creating lab directory path=/home/mickm/git/containerlab/lab-examples/frr01/clab-frr01
+14:30:12 INFO Creating container name=PC2
+14:30:12 INFO Creating container name=router2
+14:30:12 INFO Creating container name=router3
+14:30:12 INFO Creating container name=PC1
+14:30:12 INFO Creating container name=router1
+14:30:12 INFO Creating container name=PC3
+14:30:13 INFO Created link: PC3:eth1 ▪┄┄▪ router3:eth3
+14:30:13 INFO Created link: router2:eth2 ▪┄┄▪ router3:eth2
+14:30:13 INFO Created link: PC2:eth1 ▪┄┄▪ router2:eth3
+14:30:13 INFO Created link: router1:eth1 ▪┄┄▪ router2:eth1
+14:30:13 INFO Created link: router1:eth2 ▪┄┄▪ router3:eth1
+14:30:13 INFO Created link: PC1:eth1 ▪┄┄▪ router1:eth3
+14:30:13 INFO Adding host entries path=/etc/hosts
+14:30:13 INFO Adding SSH config for nodes path=/etc/ssh/ssh_config.d/clab-frr01.conf
+You are on the latest version (0.69.3)
+╭────────────────────┬─────────────────────────────────┬─────────┬───────────────────╮
+│        Name        │            Kind/Image           │  State  │   IPv4/6 Address  │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-PC1     │ linux                           │ running │ 172.20.20.3       │
+│                    │ alpine_pc:1.0                   │         │ 3fff:172:20:20::3 │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-PC2     │ linux                           │ running │ 172.20.20.2       │
+│                    │ praqma/network-multitool:latest │         │ 3fff:172:20:20::2 │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-PC3     │ linux                           │ running │ 172.20.20.6       │
+│                    │ praqma/network-multitool:latest │         │ 3fff:172:20:20::6 │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-router1 │ linux                           │ running │ 172.20.20.7       │
+│                    │ frrouting/frr:v7.5.1            │         │ 3fff:172:20:20::7 │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-router2 │ linux                           │ running │ 172.20.20.5       │
+│                    │ frrouting/frr:v7.5.1            │         │ 3fff:172:20:20::5 │
+├────────────────────┼─────────────────────────────────┼─────────┼───────────────────┤
+│ clab-frr01-router3 │ linux                           │ running │ 172.20.20.4       │
+│                    │ frrouting/frr:v7.5.1            │         │ 3fff:172:20:20::4 │
+╰────────────────────┴─────────────────────────────────┴─────────┴───────────────────╯
+mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$
+```
+
+## Containerlab - stop lab
+
+```bash
+mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$ clab destroy --topo frr01.clab.yml
+14:27:18 INFO Parsing & checking topology file=frr01.clab.yml
+14:27:18 INFO Parsing & checking topology file=frr01.clab.yml
+14:27:18 INFO Destroying lab name=frr01
+14:27:18 INFO Removed container name=clab-frr01-PC3
+14:27:18 INFO Removed container name=clab-frr01-PC1
+14:27:18 INFO Removed container name=clab-frr01-PC2
+14:27:18 INFO Removed container name=clab-frr01-router3
+14:27:18 INFO Removed container name=clab-frr01-router2
+14:27:18 INFO Removed container name=clab-frr01-router1
+14:27:18 INFO Removing host entries path=/etc/hosts
+14:27:18 INFO Removing SSH config path=/etc/ssh/ssh_config.d/clab-frr01.conf
+mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$
+```
+
+## Containerlab - mounted folders config
+
+```yml
+
+    PC2:
+      kind: linux
+      image: zabbix:1.0
+      ports:
+      - "8080:80"
+      - "8443:443"
+      - "10051:10051"
+      - "10050:10050"
+      dns:
+        servers:
+          - "1.1.1.1"
+      binds:
+        - PC2/home:/home
+```
+
+## Containerlab - mounted folders from host
+
+```bash
+mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$ ls -l
+total 44
+-rwxr-xr-x  1 mmorrow24work mmorrow24work 1229 Sep  1 23:07 PC-interfaces.sh
+drwxr-xr-x  3 mmorrow24work mmorrow24work 4096 Sep  3 19:18 PC2
+-rwxr-xr-x  1 mmorrow24work mmorrow24work  516 Sep  1 17:16 README.md
+drwxrwxr-x+ 3 root          mmorrow24work 4096 Sep  1 17:18 clab-frr01
+-rwxr-xr-x  1 mmorrow24work mmorrow24work 1271 Sep  3 19:52 frr01.clab.yml
+drwxr-xr-x  2 mmorrow24work mmorrow24work 4096 Sep  1 17:16 router1
+drwxr-xr-x  2 mmorrow24work mmorrow24work 4096 Sep  1 17:16 router2
+drwxr-xr-x  2 mmorrow24work mmorrow24work 4096 Sep  1 23:06 router3
+-rwxr-xr-x  1 mmorrow24work mmorrow24work  229 Sep  1 23:39 routers-snmp.sh
+-rwxr-xr-x  1 mmorrow24work mmorrow24work   64 Sep  1 23:55 run.sh
+mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$ ls -l PC2/home/
+total 28096
+-rw-r--r-- 1 mmorrow24work mmorrow24work 24444013 Sep  3 20:27 2_zabbix_backup.sql
+-rw-r--r-- 1 mmorrow24work mmorrow24work  4321895 Sep  3 20:24 zabbix_backup.sql.gz
+mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
+```
+
