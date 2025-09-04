@@ -1,3 +1,55 @@
+# Git
+## Use Git Clone to download a new repository
+
+```bash
+mickm@mickm-Latitude-7410:~/git$ git clone https://github.com/mmorrow24work/digital-twin-containerlab.git
+Cloning into 'digital-twin-containerlab'...
+remote: Enumerating objects: 398, done.
+remote: Counting objects: 100% (109/109), done.
+remote: Compressing objects: 100% (86/86), done.
+remote: Total 398 (delta 64), reused 20 (delta 20), pack-reused 289 (from 2)
+Receiving objects: 100% (398/398), 167.13 KiB | 496.00 KiB/s, done.
+Resolving deltas: 100% (167/167), done.
+mickm@mickm-Latitude-7410:~/git$
+```
+
+## Use git pull to download changes to a new repository
+```bash
+mickm@mickm-Latitude-7410:~/git$ git clone https://github.com/mmorrow24work/digital-twin-containerlab.git
+fatal: destination path 'digital-twin-containerlab' already exists and is not an empty directory.
+mickm@mickm-Latitude-7410:~/git$ cd digital-twin-containerlab/
+mickm@mickm-Latitude-7410:~/git/digital-twin-containerlab$ git pull
+remote: Enumerating objects: 91, done.
+remote: Counting objects: 100% (77/77), done.
+remote: Compressing objects: 100% (67/67), done.
+remote: Total 91 (delta 35), reused 7 (delta 7), pack-reused 14 (from 1)
+Unpacking objects: 100% (91/91), 42.32 KiB | 1.63 MiB/s, done.
+From https://github.com/mmorrow24work/digital-twin-containerlab
+   40b64d8..9d0a29c  main       -> origin/main
+Updating 40b64d8..9d0a29c
+Fast-forward
+ BLOG.md                                              |  35 +++++++
+ NOTES.md                                             | 198 ++++++++++++++++++++++++++++++---------
+ QUICKSTART.md                                        | 145 +++++++++++++++++++++++++++++
+ README.md                                            |  70 ++++----------
+ docker_custom_image/frr-snmp/AI.md                   | 960 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ docker_custom_image/frr-snmp/Dockerfile              |  36 ++++++++
+ docker_custom_image/frr-snmp/configs/frr/daemons     |  57 ++++++++++++
+ docker_custom_image/frr-snmp/configs/frr/frr.conf    |  28 ++++++
+ docker_custom_image/frr-snmp/configs/snmp/snmpd.conf |  72 +++++++++++++++
+ docker_custom_image/frr-snmp/start-frr-snmp.sh       |  72 +++++++++++++++
+ 10 files changed, 1579 insertions(+), 94 deletions(-)
+ create mode 100644 BLOG.md
+ create mode 100644 QUICKSTART.md
+ create mode 100644 docker_custom_image/frr-snmp/AI.md
+ create mode 100644 docker_custom_image/frr-snmp/Dockerfile
+ create mode 100644 docker_custom_image/frr-snmp/configs/frr/daemons
+ create mode 100644 docker_custom_image/frr-snmp/configs/frr/frr.conf
+ create mode 100644 docker_custom_image/frr-snmp/configs/snmp/snmpd.conf
+ create mode 100644 docker_custom_image/frr-snmp/start-frr-snmp.sh
+mickm@mickm-Latitude-7410:~/git/digital-twin-containerlab$
+```
+
 # Zabbix
 ## SQL backup in Zabbix
 
