@@ -69,7 +69,7 @@ total 28096
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
 ```
 ### Zabbix - Install using docker compose
-```
+```bash
 mickm@mickm-Latitude-7410:~/git$ git clone https://github.com/zabbix/zabbix-docker.git
 Cloning into 'zabbix-docker'...
 remote: Enumerating objects: 128163, done.
