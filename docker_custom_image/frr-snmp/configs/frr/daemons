@@ -1,0 +1,57 @@
+# This file tells the frr package which daemons to start.
+zebra=yes
+bgpd=yes
+ospfd=yes
+ospf6d=no
+ripd=no
+ripngd=no
+isisd=no
+pimd=no
+ldpd=no
+nhrpd=no
+eigrpd=no
+babeld=no
+sharpd=no
+pbrd=no
+bfdd=no
+fabricd=no
+vrrpd=no
+pathd=no
+
+zebra_options="  --daemon -A 127.0.0.1"
+bgpd_options="   --daemon -A 127.0.0.1"
+ospfd_options="  --daemon -A 127.0.0.1"
+ospf6d_options=" --daemon -A ::1"
+ripd_options="   --daemon -A 127.0.0.1"
+ripngd_options=" --daemon -A ::1"
+isisd_options="  --daemon -A 127.0.0.1"
+pimd_options="   --daemon -A 127.0.0.1"
+ldpd_options="   --daemon -A 127.0.0.1"
+nhrpd_options="  --daemon -A 127.0.0.1"
+eigrpd_options=" --daemon -A 127.0.0.1"
+babeld_options=" --daemon -A 127.0.0.1"
+sharpd_options=" --daemon -A 127.0.0.1"
+pbrd_options="   --daemon -A 127.0.0.1"
+bfdd_options="   --daemon -A 127.0.0.1"
+fabricd_options="--daemon -A 127.0.0.1"
+vrrpd_options="  --daemon -A 127.0.0.1"
+
+vtysh_enable=yes
+zebra_wrap=no
+bgpd_wrap=no
+ospfd_wrap=no
+ospf6d_wrap=no
+ripd_wrap=no
+ripngd_wrap=no
+isisd_wrap=no
+pimd_wrap=no
+ldpd_wrap=no
+nhrpd_wrap=no
+eigrpd_wrap=no
+babeld_wrap=no
+sharpd_wrap=no
+pbrd_wrap=no
+bfdd_wrap=no
+fabricd_wrap=no
+vrrpd_wrap=no
+EOF
