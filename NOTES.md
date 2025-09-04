@@ -293,83 +293,8 @@ zabbix
 mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ 
 ```
 
-## Zabbix - Install using podman-compose 
+## Zabbix - Install using podman compose or podman-compose - fails on first attempt
 
-Although using podman and podman-compose might be the right way to go, it didn't work first time for me - so I decided to park this to avoid getting pulled down yet another rabbit hole !!
+Although using podman compose or podman-compose might be the right way to go, it didn't work first time for me - so I decided to park this to avoid getting pulled down yet another rabbit hole !!
 
-```bash
-
-mickm@mickm-Latitude-7410:~/git/zabbix-docker$ podman compose -f ./docker-compose_v3_alpine_mysql_latest.yaml up -d
->>>> Executing external compose provider "/usr/libexec/docker/cli-plugins/docker-compose". Please refer to the documentation for details. <<<<
-unable to get image 'zabbix/zabbix-web-nginx-mysql:alpine-7.4-latest': Cannot connect to the Docker daemon at unix:///run/user/1000/podman/podman.sock. Is the docker daemon running?
-Error: executing /usr/libexec/docker/cli-plugins/docker-compose -f ./docker-compose_v3_alpine_mysql_latest.yaml up -d: exit status 1
-mickm@mickm-Latitude-7410:~/git/zabbix-docker$ ls
-build.json                          compose_zabbix_components.yaml              docker-compose_v3_alpine_pgsql_local.yaml   docker-compose_v3_ol_mysql_latest.yaml      docker-compose_v3_ubuntu_mysql_local.yaml   kubernetes.yaml           sources
-build.sh                            config_templates                            docker-compose_v3_centos_mysql_latest.yaml  docker-compose_v3_ol_mysql_local.yaml       docker-compose_v3_ubuntu_pgsql_latest.yaml  LICENSE                   zbx_env
-compose_additional_components.yaml  docker-compose_v3_alpine_mysql_latest.yaml  docker-compose_v3_centos_mysql_local.yaml   docker-compose_v3_ol_pgsql_latest.yaml      docker-compose_v3_ubuntu_pgsql_local.yaml   README.md
-compose_databases.yaml              docker-compose_v3_alpine_mysql_local.yaml   docker-compose_v3_centos_pgsql_latest.yaml  docker-compose_v3_ol_pgsql_local.yaml       Dockerfiles                                 SECURITY.md
-compose.yaml                        docker-compose_v3_alpine_pgsql_latest.yaml  docker-compose_v3_centos_pgsql_local.yaml   docker-compose_v3_ubuntu_mysql_latest.yaml  env_vars                                    sonar-project.properties
-mickm@mickm-Latitude-7410:~/git/zabbix-docker$
-```
-
-### The error message:
-
-```
-unable to get image 'zabbix/zabbix-web-nginx-mysql:alpine-7.4-latest': Cannot connect to the Docker daemon at unix:///run/user/1000/podman/podman.sock. Is the docker daemon running?
-```
-
-indicates that when running `podman compose`, the system is actually delegating to the Docker Compose plugin (`/usr/libexec/docker/cli-plugins/docker-compose`) which tries to connect to a Docker daemon socket that isn't running or accessible for Podman.
-
-### Why this happens:
-
-- `podman compose` is a thin wrapper that calls an external Compose provider.
-- By default on your system, the Docker Compose CLI is installed and is taking precedence.
-- Docker Compose expects a Docker daemon which is not running because Podman works daemonless.
-- When running `docker compose` directly, it works because Docker is installed and running.
-
-***
-
-### How to fix this for Podman Compose usage:
-
-1. **Use the native Podman Compose** (a separate tool):
-   - Install `podman-compose` (the Python-based tool designed for Podman).
-   - Run:  
-     ```
-     podman-compose -f ./docker-compose_v3_alpine_mysql_latest.yaml up -d
-     ```
-   - This does not require a running Docker daemon and is designed for Podman's rootless mode.
-
-2. **Use Podman’s daemon socket** (if you want to continue using Docker Compose CLI):
-   - Start Podman's socket:
-     ```
-     systemctl --user enable --now podman.socket
-     ```
-   - Set environment variable (for rootless Podman user):
-     ```
-     export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
-     ```
-   - Retry `podman compose` after this.
-
-3. **Or use Docker directly** if Docker daemon is available (which you already did successfully):
-   - Using `docker compose -f ... up -d` works since Docker daemon is running.
-
-***
-
-### Summary
-
-- On your system, `podman compose` is calling Docker Compose CLI, which requires a Docker daemon.
-- Unless you configure or enable Podman’s socket as Docker socket, `podman compose` won't work smoothly.
-- For true Podman Compose usage, install and use the separate `podman-compose` tool, or start Podman's socket service.
-- Alternatively, continue using Docker Compose CLI if Docker daemon is running.
-
-This explains why `docker compose` works on your machine but `podman compose` doesn't without additional setup.[1][4][5][7]
-
-[1](https://docs.podman.io/en/v5.3.1/markdown/podman-compose.1.html)
-[2](https://podman-desktop.io/docs/migrating-from-docker/managing-docker-compatibility)
-[3](https://www.reddit.com/r/podman/comments/1bk4nee/whats_the_current_canonical_way_to_run_docker/)
-[4](https://www.redhat.com/en/blog/podman-docker-compose)
-[5](https://www.redhat.com/en/blog/podman-compose-docker-compose)
-[6](https://podman-desktop.io/docs/compose/running-compose)
-[7](https://linuxconfig.org/how-to-use-docker-compose-with-podman-on-linux)
-[8](https://github.com/containers/podman/discussions/14430)
-[9](https://betterstack.com/community/guides/scaling-docker/podman-vs-docker/)
+I created a ISSUE for it - so I dont forget it.
