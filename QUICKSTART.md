@@ -7,7 +7,15 @@ These instructions are the same for various hosting environments including ...
 - Locally hosted VM - e.g. an Ubuntu VM running under Hyper-V
 - WSL - i like this method, but I have had some issues with it - which might be my bad - or it could be the Telent PC build ( Cisco Umberella etc ) that's messing me up ???
 
-# Clone github repo's
+# The [containerlab](https://containerlab.dev/install/) quickstart install is a great place to start
+
+# We can also Linux packages manually
+
+```bash
+mickm@mickm-Latitude-7410:~/$ sudo apt get install git gh docker
+```
+
+# We can also clone / download the github repo's manually
 
 ```bash
 mickm@mickm-Latitude-7410:~/$ mkdir -p git
