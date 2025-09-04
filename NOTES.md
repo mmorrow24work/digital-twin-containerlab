@@ -297,4 +297,4 @@ mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$
 
 Although using podman compose or podman-compose might be the right way to go, it didn't work first time for me - so I decided to park this to avoid getting pulled down yet another rabbit hole !!
 
-I created a ISSUE for it - so I dont forget it.
+I created an [ISSUE](https://github.com/mmorrow24work/digital-twin-containerlab/issues/20) for it - so I don't forget it.
