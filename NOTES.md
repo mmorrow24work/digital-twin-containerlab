@@ -466,3 +466,133 @@ This method simulates SNMP events in test setups or for integration checks with 
 [8](https://www.ibm.com/docs/sv/ssw_aix_72/s_commands/snmptrap.html)
 [9](http://www.net-snmp.org/tutorial/tutorial-5/commands/snmptrap.html)
 [10](https://knowledge.broadcom.com/external/article/57331/how-to-manually-generate-traps-and-test.html)
+
+# IPERF3 examples
+
+## Connect to a container and enter server mode to listen for incoming packets
+
+```bash
+mickm@mickm-Latitude-7410:~$ docker exec -it clab-frr01-PC1 bash
+PC1:/#
+PC1:/# iperf3 -s
+-----------------------------------------------------------
+Server listening on 5201 (test #1)
+-----------------------------------------------------------
+Accepted connection from 3fff:172:20:20::6, port 47692
+[  5] local 3fff:172:20:20::5 port 5201 connected to 3fff:172:20:20::6 port 33760
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-1.00   sec  5.96 MBytes  50.0 Mbits/sec  0.002 ms  0/4379 (0%)
+[  5]   1.00-2.00   sec  5.96 MBytes  50.0 Mbits/sec  0.002 ms  0/4378 (0%)
+[  5]   2.00-3.00   sec  5.96 MBytes  50.0 Mbits/sec  0.002 ms  0/4375 (0%)
+[  5]   3.00-4.00   sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4377 (0%)
+[  5]   4.00-5.00   sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4377 (0%)
+[  5]   5.00-6.00   sec  5.96 MBytes  50.0 Mbits/sec  0.002 ms  0/4379 (0%)
+[  5]   6.00-7.00   sec  5.96 MBytes  50.0 Mbits/sec  0.010 ms  0/4374 (0%)
+[  5]   7.00-8.00   sec  5.96 MBytes  50.0 Mbits/sec  0.002 ms  0/4377 (0%)
+[  5]   8.00-9.00   sec  5.96 MBytes  50.0 Mbits/sec  0.002 ms  0/4377 (0%)
+[  5]   9.00-10.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4377 (0%)
+[  5]  10.00-11.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4376 (0%)
+[  5]  11.00-12.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4378 (0%)
+[  5]  12.00-13.00  sec  5.96 MBytes  50.0 Mbits/sec  0.003 ms  0/4376 (0%)
+[  5]  13.00-14.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4376 (0%)
+[  5]  14.00-15.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4377 (0%)
+[  5]  15.00-16.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4377 (0%)
+[  5]  16.00-17.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4377 (0%)
+[  5]  17.00-18.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4377 (0%)
+[  5]  18.00-19.00  sec  5.96 MBytes  50.0 Mbits/sec  0.010 ms  0/4377 (0%)
+[  5]  19.00-20.00  sec  5.96 MBytes  50.0 Mbits/sec  0.009 ms  0/4376 (0%)
+[  5]  20.00-21.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4377 (0%)
+[  5]  21.00-22.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4377 (0%)
+[  5]  22.00-23.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4376 (0%)
+[  5]  23.00-24.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4378 (0%)
+[  5]  24.00-25.00  sec  5.96 MBytes  50.0 Mbits/sec  0.004 ms  0/4376 (0%)
+[  5]  25.00-26.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4376 (0%)
+[  5]  26.00-27.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4377 (0%)
+[  5]  27.00-28.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4377 (0%)
+[  5]  28.00-29.00  sec  5.96 MBytes  50.0 Mbits/sec  0.001 ms  0/4379 (0%)
+[  5]  29.00-30.00  sec  5.96 MBytes  50.0 Mbits/sec  0.002 ms  0/4375 (0%)
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-30.00  sec   179 MBytes  50.0 Mbits/sec  0.002 ms  0/131305 (0%)  receiver
+-----------------------------------------------------------
+```
+
+## Connect to a container and enter cleint mode to send for outgoing packets
+
+```bash
+mickm@mickm-Latitude-7410:~$ docker exec -it clab-frr01-PC2 bash
+PC2:/#
+mickm@mickm-Latitude-7410:~$ docker exec -it clab-frr01-PC2 bash
+PC2:/# iperf3 -c PC1 -u -b 50M -t 30
+Connecting to host PC1, port 5201
+[  5] local 3fff:172:20:20::6 port 33760 connected to 3fff:172:20:20::5 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.96 MBytes  50.0 Mbits/sec  4379
+[  5]   1.00-2.00   sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]   2.00-3.00   sec  5.96 MBytes  50.0 Mbits/sec  4376
+[  5]   3.00-4.00   sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]   4.00-5.00   sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]   5.00-6.00   sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]   6.00-7.00   sec  5.96 MBytes  50.0 Mbits/sec  4376
+[  5]   7.00-8.00   sec  5.96 MBytes  50.0 Mbits/sec  4378
+[  5]   8.00-9.00   sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]   9.00-10.00  sec  5.96 MBytes  50.0 Mbits/sec  4376
+[  5]  10.00-11.00  sec  5.96 MBytes  50.0 Mbits/sec  4376
+[  5]  11.00-12.00  sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]  12.00-13.00  sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]  13.00-14.00  sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]  14.00-15.00  sec  5.96 MBytes  50.0 Mbits/sec  4376
+[  5]  15.00-16.00  sec  5.96 MBytes  50.0 Mbits/sec  4378
+[  5]  16.00-17.00  sec  5.96 MBytes  50.0 Mbits/sec  4376
+[  5]  17.00-18.00  sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]  18.00-19.00  sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]  19.00-20.00  sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]  20.00-21.00  sec  5.96 MBytes  50.0 Mbits/sec  4376
+[  5]  21.00-22.00  sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]  22.00-23.00  sec  5.96 MBytes  50.0 Mbits/sec  4376
+[  5]  23.00-24.00  sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]  24.00-25.00  sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]  25.00-26.00  sec  5.96 MBytes  50.0 Mbits/sec  4377
+[  5]  26.00-27.00  sec  5.96 MBytes  50.0 Mbits/sec  4379
+[  5]  27.00-28.00  sec  5.96 MBytes  50.0 Mbits/sec  4374
+[  5]  28.00-29.00  sec  5.96 MBytes  50.0 Mbits/sec  4380
+[  5]  29.00-30.00  sec  5.96 MBytes  50.0 Mbits/sec  4374
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-30.00  sec   179 MBytes  50.0 Mbits/sec  0.000 ms  0/131305 (0%)  sender
+[  5]   0.00-30.00  sec   179 MBytes  50.0 Mbits/sec  0.002 ms  0/131305 (0%)  receiver
+
+iperf Done.
+PC2:/#
+```
+
+## The default `iperf3` server (`iperf3 -s`) can only handle one client test at a time per server process. It accepts a single client connection at once, so multiple simultaneous test sessions are not supported on the same port.
+
+### Details:
+
+- `iperf3` server is single-threaded and allows just one test connection at a time on the listening port (default 5201).
+- The `--parallel` option applies to client-side streams (multiple streams inside one client test), but the server itself still handles just one client session at a time.
+- To run multiple simultaneous tests, you need to start multiple `iperf3` server instances, each listening on a different port.
+- Example for multiple server instances:
+  ```bash
+  iperf3 -s -p 5201 &
+  iperf3 -s -p 5202 &
+  ```
+- Clients connect to different server ports accordingly.
+- Some users build load balancers or brokers to schedule multiple iperf3 tests, but this is outside of default iperf3 functionality.
+- `iperf2` supports multiple clients simultaneously, but has other limitations compared to `iperf3`.
+
+### Summary
+- **One iperf3 server process = one simultaneous client connection.**
+- Use multiple server processes on different ports to handle multiple tests in parallel.
+
+References:
+- Discussions and issues in iperf3 repository confirming single-client server behavior.[1][3][5][6][7]
+
+[1](https://www.reddit.com/r/networking/comments/sku8cy/iperf_for_multi_streams/)
+[2](https://www.jeffgeerling.com/blog/2025/benchmarking-multiple-network-interfaces-once-linux-iperf3)
+[3](https://github.com/esnet/iperf/issues/327)
+[4](https://github.com/esnet/iperf/discussions/1276)
+[5](https://fasterdata.es.net/performance-testing/network-troubleshooting-tools/iperf/multi-stream-iperf3/)
+[6](https://iperf.fr/iperf-doc.php)
+[7](https://engineering.qubecinema.com/2020/08/08/load-balancing-iperf3-servers.html)
