@@ -167,7 +167,7 @@ kathara/quagga                  latest              62dd101dfa28   23 months ago
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$
 ```
 
-## Zabbix - Stop/start using docker compose
+### Zabbix - Stop/start using docker compose
 
 ```bash
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker compose -f ./docker-compose_v3_alpine_mysql_latest.yaml down
@@ -198,7 +198,7 @@ mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker compose -f ./docker-compos
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ 
 ```
 
-## Zabbix - inside the container
+### Zabbix - inside the container
 
 ```bash
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker ps
@@ -244,9 +244,9 @@ exit
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ 
 ```
 
-## Zabbix web UI - [Zabbix - localhost](http://localhost)
+### Zabbix web UI - [Zabbix - localhost](http://localhost)
 
-## Zabbix environment variables
+### Zabbix environment variables
 
 ```bash
 mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ ls -al
