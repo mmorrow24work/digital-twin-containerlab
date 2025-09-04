@@ -30,7 +30,7 @@ exit
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
 ```
 
-### Containerlab - mounted folders
+### Containerlab - mounted folders config
 
 ```yml
 
@@ -48,6 +48,8 @@ mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
       binds:
         - PC2/home:/home
 ```
+
+### Containerlab - mounted folders from host
 
 ```bash
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$ ls -l
@@ -68,7 +70,9 @@ total 28096
 -rw-r--r-- 1 mmorrow24work mmorrow24work  4321895 Sep  3 20:24 zabbix_backup.sql.gz
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
 ```
+
 ### Zabbix - Install using docker compose
+
 ```bash
 mickm@mickm-Latitude-7410:~/git$ git clone https://github.com/zabbix/zabbix-docker.git
 Cloning into 'zabbix-docker'...
@@ -164,7 +168,9 @@ busybox                         latest              0ed463b26dae   11 months ago
 kathara/quagga                  latest              62dd101dfa28   23 months ago   1.09GB
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$
 ```
+
 ### Zabbix - Stop/start using docker compose
+
 ```bash
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker compose -f ./docker-compose_v3_alpine_mysql_latest.yaml down
 [+] Running 10/10
@@ -193,7 +199,9 @@ mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker compose -f ./docker-compos
  ✔ Container zabbix-docker-zabbix-server-1           Started                                                                                                                                                                                        6.3s 
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ 
 ```
+
 ### Zabbix - inside the container
+
 ```bash
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker ps
 CONTAINER ID   IMAGE                                             COMMAND                  CREATED          STATUS                    PORTS                                                                                NAMES
@@ -237,8 +245,11 @@ d949ca9b1089:~$ exit
 exit
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ 
 ```
+
 ### Zabbix web UI - [Zabbix - localhost](http://localhost)
+
 ### Zabbix environment variables
+
 ```bash
 mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ ls -al
 total 112
@@ -283,179 +294,81 @@ root
 zabbix
 mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ 
 ```
-### Zabbix - Install using podman - example 1
+### Zabbix - Install using podman 
 
-Here is an example of a Podman Compose (or docker-compose compatible) YAML for setting up Zabbix with containers including the Zabbix server, frontend (web UI), and database:
+Although using podman and podman-compose might be the right way to go, it didn't work first time for me - so I decided to park this to avoid getting pulled down yet another rabbit hole !!
 
-```yaml
-version: '3.8'
+```bash
 
-services:
-  zabbix-postgres:
-    image: postgres:16.4
-    container_name: zabbix-postgres
-    environment:
-      POSTGRES_USER: zabbix
-      POSTGRES_PASSWORD: p0dm@nr0cks
-      POSTGRES_DB: zabbix
-      PGDATA: /var/lib/postgresql/data/pgdata
-    volumes:
-      - /opt/zabbix/data:/var/lib/postgresql/data
-    networks:
-      zabbix-net:
-    restart: unless-stopped
-
-  zabbix-server-pgsql:
-    image: zabbix/zabbix-server-pgsql:alpine-7.0-latest
-    container_name: zabbix-server-pgsql
-    environment:
-      DB_SERVER_HOST: zabbix-postgres
-      POSTGRES_USER: zabbix
-      POSTGRES_PASSWORD: p0dm@nr0cks
-      POSTGRES_DB: zabbix
-    ports:
-      - "10051:10051"
-    networks:
-      zabbix-net:
-    restart: unless-stopped
-
-  zabbix-web-nginx-pgsql:
-    image: zabbix/zabbix-web-nginx-pgsql:alpine-7.0-latest
-    container_name: zabbix-web-ui
-    environment:
-      ZBX_SERVER_HOST: zabbix-server-pgsql
-      ZBX_SERVER_PORT: 10051
-      DB_SERVER_HOST: zabbix-postgres
-      POSTGRES_USER: zabbix
-      POSTGRES_PASSWORD: p0dm@nr0cks
-      POSTGRES_DB: zabbix
-      PHP_TZ: Europe/London
-    ports:
-      - "8080:8080"
-    networks:
-      zabbix-net:
-    restart: unless-stopped
-
-networks:
-  zabbix-net:
-    driver: bridge
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$ podman compose -f ./docker-compose_v3_alpine_mysql_latest.yaml up -d
+>>>> Executing external compose provider "/usr/libexec/docker/cli-plugins/docker-compose". Please refer to the documentation for details. <<<<
+unable to get image 'zabbix/zabbix-web-nginx-mysql:alpine-7.4-latest': Cannot connect to the Docker daemon at unix:///run/user/1000/podman/podman.sock. Is the docker daemon running?
+Error: executing /usr/libexec/docker/cli-plugins/docker-compose -f ./docker-compose_v3_alpine_mysql_latest.yaml up -d: exit status 1
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$ ls
+build.json                          compose_zabbix_components.yaml              docker-compose_v3_alpine_pgsql_local.yaml   docker-compose_v3_ol_mysql_latest.yaml      docker-compose_v3_ubuntu_mysql_local.yaml   kubernetes.yaml           sources
+build.sh                            config_templates                            docker-compose_v3_centos_mysql_latest.yaml  docker-compose_v3_ol_mysql_local.yaml       docker-compose_v3_ubuntu_pgsql_latest.yaml  LICENSE                   zbx_env
+compose_additional_components.yaml  docker-compose_v3_alpine_mysql_latest.yaml  docker-compose_v3_centos_mysql_local.yaml   docker-compose_v3_ol_pgsql_latest.yaml      docker-compose_v3_ubuntu_pgsql_local.yaml   README.md
+compose_databases.yaml              docker-compose_v3_alpine_mysql_local.yaml   docker-compose_v3_centos_pgsql_latest.yaml  docker-compose_v3_ol_pgsql_local.yaml       Dockerfiles                                 SECURITY.md
+compose.yaml                        docker-compose_v3_alpine_pgsql_latest.yaml  docker-compose_v3_centos_pgsql_local.yaml   docker-compose_v3_ubuntu_mysql_latest.yaml  env_vars                                    sonar-project.properties
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$
 ```
 
-- This YAML defines three containers: PostgreSQL database, Zabbix server, and Zabbix web UI.
-- They share the same user-defined network `zabbix-net` for internal communication.
-- PostgreSQL data is persisted to `/opt/zabbix/data` on the host.
-- Ports 10051 (Zabbix server) and 8080 (web UI) are published for external access.
+The error message:
 
-Podman Compose or Docker Compose can launch this with:
 ```
-podman-compose up -d
+unable to get image 'zabbix/zabbix-web-nginx-mysql:alpine-7.4-latest': Cannot connect to the Docker daemon at unix:///run/user/1000/podman/podman.sock. Is the docker daemon running?
 ```
 
-Or with Podman pods and individual containers if preferred.
+indicates that when running `podman compose`, the system is actually delegating to the Docker Compose plugin (`/usr/libexec/docker/cli-plugins/docker-compose`) which tries to connect to a Docker daemon socket that isn't running or accessible for Podman.
 
-This setup is based on container images from the official Zabbix repository and works equivalently on Podman for Linux systems.[1][2][3][4][6]
+### Why this happens:
+- `podman compose` is a thin wrapper that calls an external Compose provider.
+- By default on your system, the Docker Compose CLI is installed and is taking precedence.
+- Docker Compose expects a Docker daemon which is not running because Podman works daemonless.
+- When running `docker compose` directly, it works because Docker is installed and running.
 
-[1](https://www.linkedin.com/pulse/zabbix-container-setup-vigneshwaran-ravichandran-ak7nc)
-[2](https://www.reddit.com/r/zabbix/comments/1b976nw/help_with_zabbix_containers_using_podman_and/)
-[3](https://www.zabbix.com/documentation/current/en/manual/installation/containers)
-[4](https://www.deanthomson.com/blog/installing-zabbix-using-containers/)
-[5](https://gist.github.com/FilBot3/8c5dec95c83399d021f4c622ff51d07a)
-[6](https://www.zabbix.com/documentation/6.2/en/manual/installation/containers)
-[7](https://heyvaldemar.dev/install-zabbix-using-docker-compose-473523b93aad)
-[8](https://infotechys.com/set-up-and-use-podman-compose-on-almalinux/)
-[9](https://github.com/containers/podman-compose/issues/957)
+***
 
-### Zabbix - Install using podman - example 2
+### How to fix this for Podman Compose usage:
 
-Here is a Podman Compose style YAML example to run Zabbix with MySQL database and a SNMP traps container included:
+1. **Use the native Podman Compose** (a separate tool):
+   - Install `podman-compose` (the Python-based tool designed for Podman).
+   - Run:  
+     ```
+     podman-compose -f ./docker-compose_v3_alpine_mysql_latest.yaml up -d
+     ```
+   - This does not require a running Docker daemon and is designed for Podman's rootless mode.
 
-```yaml
-version: '3.8'
+2. **Use Podman’s daemon socket** (if you want to continue using Docker Compose CLI):
+   - Start Podman's socket:
+     ```
+     systemctl --user enable --now podman.socket
+     ```
+   - Set environment variable (for rootless Podman user):
+     ```
+     export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+     ```
+   - Retry `podman compose` after this.
 
-services:
-  mysql-server:
-    image: mysql:8.0
-    container_name: mysql-server
-    environment:
-      MYSQL_DATABASE: zabbix
-      MYSQL_USER: zabbix
-      MYSQL_PASSWORD: zabbix_pwd
-      MYSQL_ROOT_PASSWORD: root_pwd
-    volumes:
-      - ./mysql:/var/lib/mysql:z
-    restart: always
-    networks:
-      - zabbix-net
+3. **Or use Docker directly** if Docker daemon is available (which you already did successfully):
+   - Using `docker compose -f ... up -d` works since Docker daemon is running.
 
-  zabbix-server-mysql:
-    image: zabbix/zabbix-server-mysql:alpine-7.4
-    container_name: zabbix-server-mysql
-    environment:
-      DB_SERVER_HOST: mysql-server
-      MYSQL_DATABASE: zabbix
-      MYSQL_USER: zabbix
-      MYSQL_PASSWORD: zabbix_pwd
-      ZBX_ENABLE_SNMP_TRAPS: "true"
-    ports:
-      - "10051:10051"
-    restart: always
-    depends_on:
-      - mysql-server
-      - zabbix-snmptraps
-    networks:
-      - zabbix-net
+***
 
-  zabbix-snmptraps: 
-    image: zabbix/zabbix-snmptraps:alpine-7.4
-    container_name: zabbix-snmptraps
-    volumes:
-      - ./snmptraps:/var/lib/zabbix/snmptraps:rw
-      - /var/lib/zabbix/mibs:/usr/share/snmp/mibs:ro
-    ports:
-      - "162:1162/udp"
-    restart: unless-stopped
-    networks:
-      - zabbix-net
+### Summary
+- On your system, `podman compose` is calling Docker Compose CLI, which requires a Docker daemon.
+- Unless you configure or enable Podman’s socket as Docker socket, `podman compose` won't work smoothly.
+- For true Podman Compose usage, install and use the separate `podman-compose` tool, or start Podman's socket service.
+- Alternatively, continue using Docker Compose CLI if Docker daemon is running.
 
-  zabbix-web-mysql:
-    image: registry.connect.redhat.com/zabbix/zabbix-web-mysql-50
-    container_name: zabbix-web-mysql:alpine-7.4
-    environment:
-      ZBX_SERVER_HOST: zabbix-server-mysql
-      DB_SERVER_HOST: mysql-server
-      MYSQL_DATABASE: zabbix
-      MYSQL_USER: zabbix
-      MYSQL_PASSWORD: zabbix_pwd
-      MYSQL_ROOT_PASSWORD: root_pwd
-      PHP_TZ: Europe/London
-    ports:
-      - "8080:8080"
-      - "443:8443"
-    restart: always
-    depends_on:
-      - zabbix-server-mysql
-    networks:
-      - zabbix-net
+This explains why `docker compose` works on your machine but `podman compose` doesn't without additional setup.[1][4][5][7]
 
-networks:
-  zabbix-net:
-    driver: bridge
-```
-
-- The MySQL container runs the database with data persisted on host in `./mysql`.
-- The Zabbix server uses the MySQL DB and has SNMP traps enabled, connecting to the `zabbix-snmptraps` container.
-- The SNMP traps container listens on UDP port 162 (mapped to 1162 inside).
-- The Zabbix web UI connects to the server and database containers.
-- Services communicate over a user-defined network `zabbix-net`.
-
-This YAML works with Podman Compose or Docker Compose, ensuring the Zabbix environment includes MySQL and SNMP trap handling via containers.[1][2][7]
-
-[1](https://www.devopsschool.com/blog/how-to-install-zabbix-server-and-dashboard-using-docker/)
-[2](https://www.zabbix.com/documentation/6.2/en/manual/installation/containers)
-[3](https://www.zabbix.com/documentation/current/en/manual/installation/containers)
-[4](https://www.reddit.com/r/zabbix/comments/1b2frlp/running_zabbix_in_podman_containers/)
-[5](https://catalog.redhat.com/software/containers/zabbix/zabbix-server-mysql-62/62d11e2f033f108fb6a2529b)
-[6](https://www.reddit.com/r/zabbix/comments/1b976nw/help_with_zabbix_containers_using_podman_and/)
-[7](https://www.zabbix.com/forum/zabbix-troubleshooting-and-problems/475587-unable-to-get-snmp-traps-into-zabbix-server-mysql-using-containers)
-[8](https://www.initmax.com/wiki/installation-and-basic-usage-of-browser-item/)
-[9](https://bestmonitoringtools.com/tutorial-snmp-traps-on-zabbix/)
+[1](https://docs.podman.io/en/v5.3.1/markdown/podman-compose.1.html)
+[2](https://podman-desktop.io/docs/migrating-from-docker/managing-docker-compatibility)
+[3](https://www.reddit.com/r/podman/comments/1bk4nee/whats_the_current_canonical_way_to_run_docker/)
+[4](https://www.redhat.com/en/blog/podman-docker-compose)
+[5](https://www.redhat.com/en/blog/podman-compose-docker-compose)
+[6](https://podman-desktop.io/docs/compose/running-compose)
+[7](https://linuxconfig.org/how-to-use-docker-compose-with-podman-on-linux)
+[8](https://github.com/containers/podman/discussions/14430)
+[9](https://betterstack.com/community/guides/scaling-docker/podman-vs-docker/)
