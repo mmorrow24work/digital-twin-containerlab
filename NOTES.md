@@ -704,3 +704,50 @@ f75c1930d1e5   clab-frr01-PC3                           0.06%     12.72MiB / 15.
 ff4d059fc199   zabbix-docker-zabbix-web-nginx-mysql-1   18.69%    255.7MiB / 512MiB     49.93%    248MB / 178MB    26MB / 28.7kB     22
 2e207fec6db8   zabbix-docker-mysql-server-1             3.43%     716.9MiB / 15.29GiB   4.58%     160MB / 1.2GB    104MB / 3.55GB    71
 ```
+
+## CPU stats reported by Zabbix using SNMP v2 and CPU stats reported directly by Docker
+
+The discrepancy between CPU stats reported by Zabbix using SNMP v2 and CPU stats reported directly by Docker is a common issue due to differences in how these metrics are collected and interpreted:
+
+### Reasons for difference:
+
+1. **Different data sources and granularity:**
+   - Zabbix via SNMP queries system-level CPU OIDs (e.g., from devices or hosts) which represent overall CPU usage or per-core metrics according to SNMP MIBs.
+   - Docker reports CPU usage from cgroups and container runtime info, reflecting container-specific CPU utilization.
+   - SNMP CPU values reflect host or device perspective; Docker stats reflect container resource usage.
+
+2. **SNMP v2 MIB limitations:**
+   - SNMP v2 CPU usage counters may have different update intervals or calculation methods than Docker's real-time CPU usage.
+   - SNMP polling intervals and aggregation can cause delays and lower resolution in CPU usage reports.
+  
+3. **Containers abstract CPU use:**
+   - Docker containers share the host kernel; their CPU stats come from cgroups and namespaces.
+   - From SNMP perspective (host level), CPU might seem underutilized while a container process is actively using CPU time.
+   - SNMP metrics are usually for the whole host, not containerized environments unless specific container SNMP agents or extensions are used.
+
+4. **Monitoring docker via Zabbix native Docker plugins or agent inside container:**
+   - Using Zabbix agent (or Zabbix agent 2 docker plugin) inside or on the host to monitor Docker metrics provides more accurate container CPU stats.
+   - SNMP is better suited for physical devices, network gear, and non-containerized hosts.
+
+### Recommendations:
+
+- Use Zabbix Docker monitoring templates/plugins designed to collect container CPU and resource stats directly from the Docker engine or with the Zabbix agent.
+- Supplement SNMP host-level CPU monitoring with Docker-specific metrics to get a full picture.
+- Ensure polling frequency and timeout settings are configured to minimize delays or stale data.
+
+### Useful resource:
+
+- Zabbix Docker monitoring documentation explains how to monitor Docker engines and containers using native methods rather than SNMP.[1][2][9]
+
+This explains why CPU statistics don't align exactly and how to improve monitoring accuracy for Docker container CPU usage in Zabbix.
+
+[1](https://www.youtube.com/watch?v=QNdsWp_X9-c)
+[2](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp)
+[3](https://www.reddit.com/r/zabbix/comments/103e5o5/zabbix_as_container_vs_vm/)
+[4](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/cpu)
+[5](https://www.zabbix.com/documentation/current/en/manual/appendix/config/zabbix_agent2_plugins/d_plugin)
+[6](https://www.reddit.com/r/zabbix/comments/1inogbi/zabbix_on_ubuntu_server_or_docker/)
+[7](https://wiki.teltonika-networks.com/index.php?diff=109857&mobileaction=toggle_view_desktop)
+[8](https://www.zabbix.com/integrations/snmp)
+[9](https://www.zabbix.com/integrations/docker)
+[10](https://blog.devops.dev/dockerizing-monitoring-tools-b2744e9b5f98)
