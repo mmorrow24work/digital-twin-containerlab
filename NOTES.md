@@ -283,11 +283,11 @@ root
 zabbix
 mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ 
 ```
-### Zabbix - Install using podman compose
+### Zabbix - Install using podman - example 1
 
-1. create your jkdwc
-2. 
-```yml
+Here is an example of a Podman Compose (or docker-compose compatible) YAML for setting up Zabbix with containers including the Zabbix server, frontend (web UI), and database:
+
+```yaml
 version: '3.8'
 
 services:
@@ -341,5 +341,121 @@ networks:
     driver: bridge
 ```
 
+- This YAML defines three containers: PostgreSQL database, Zabbix server, and Zabbix web UI.
+- They share the same user-defined network `zabbix-net` for internal communication.
+- PostgreSQL data is persisted to `/opt/zabbix/data` on the host.
+- Ports 10051 (Zabbix server) and 8080 (web UI) are published for external access.
 
+Podman Compose or Docker Compose can launch this with:
+```
+podman-compose up -d
+```
 
+Or with Podman pods and individual containers if preferred.
+
+This setup is based on container images from the official Zabbix repository and works equivalently on Podman for Linux systems.[1][2][3][4][6]
+
+[1](https://www.linkedin.com/pulse/zabbix-container-setup-vigneshwaran-ravichandran-ak7nc)
+[2](https://www.reddit.com/r/zabbix/comments/1b976nw/help_with_zabbix_containers_using_podman_and/)
+[3](https://www.zabbix.com/documentation/current/en/manual/installation/containers)
+[4](https://www.deanthomson.com/blog/installing-zabbix-using-containers/)
+[5](https://gist.github.com/FilBot3/8c5dec95c83399d021f4c622ff51d07a)
+[6](https://www.zabbix.com/documentation/6.2/en/manual/installation/containers)
+[7](https://heyvaldemar.dev/install-zabbix-using-docker-compose-473523b93aad)
+[8](https://infotechys.com/set-up-and-use-podman-compose-on-almalinux/)
+[9](https://github.com/containers/podman-compose/issues/957)
+
+### Zabbix - Install using podman - example 2
+
+Here is a Podman Compose style YAML example to run Zabbix with MySQL database and a SNMP traps container included:
+
+```yaml
+version: '3.8'
+
+services:
+  mysql-server:
+    image: mysql:8.0
+    container_name: mysql-server
+    environment:
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix_pwd
+      MYSQL_ROOT_PASSWORD: root_pwd
+    volumes:
+      - ./mysql:/var/lib/mysql:z
+    restart: always
+    networks:
+      - zabbix-net
+
+  zabbix-server-mysql:
+    image: zabbix/zabbix-server-mysql:alpine-7.4
+    container_name: zabbix-server-mysql
+    environment:
+      DB_SERVER_HOST: mysql-server
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix_pwd
+      ZBX_ENABLE_SNMP_TRAPS: "true"
+    ports:
+      - "10051:10051"
+    restart: always
+    depends_on:
+      - mysql-server
+      - zabbix-snmptraps
+    networks:
+      - zabbix-net
+
+  zabbix-snmptraps: 
+    image: zabbix/zabbix-snmptraps:alpine-7.4
+    container_name: zabbix-snmptraps
+    volumes:
+      - ./snmptraps:/var/lib/zabbix/snmptraps:rw
+      - /var/lib/zabbix/mibs:/usr/share/snmp/mibs:ro
+    ports:
+      - "162:1162/udp"
+    restart: unless-stopped
+    networks:
+      - zabbix-net
+
+  zabbix-web-mysql:
+    image: registry.connect.redhat.com/zabbix/zabbix-web-mysql-50
+    container_name: zabbix-web-mysql:alpine-7.4
+    environment:
+      ZBX_SERVER_HOST: zabbix-server-mysql
+      DB_SERVER_HOST: mysql-server
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix_pwd
+      MYSQL_ROOT_PASSWORD: root_pwd
+      PHP_TZ: Europe/London
+    ports:
+      - "8080:8080"
+      - "443:8443"
+    restart: always
+    depends_on:
+      - zabbix-server-mysql
+    networks:
+      - zabbix-net
+
+networks:
+  zabbix-net:
+    driver: bridge
+```
+
+- The MySQL container runs the database with data persisted on host in `./mysql`.
+- The Zabbix server uses the MySQL DB and has SNMP traps enabled, connecting to the `zabbix-snmptraps` container.
+- The SNMP traps container listens on UDP port 162 (mapped to 1162 inside).
+- The Zabbix web UI connects to the server and database containers.
+- Services communicate over a user-defined network `zabbix-net`.
+
+This YAML works with Podman Compose or Docker Compose, ensuring the Zabbix environment includes MySQL and SNMP trap handling via containers.[1][2][7]
+
+[1](https://www.devopsschool.com/blog/how-to-install-zabbix-server-and-dashboard-using-docker/)
+[2](https://www.zabbix.com/documentation/6.2/en/manual/installation/containers)
+[3](https://www.zabbix.com/documentation/current/en/manual/installation/containers)
+[4](https://www.reddit.com/r/zabbix/comments/1b2frlp/running_zabbix_in_podman_containers/)
+[5](https://catalog.redhat.com/software/containers/zabbix/zabbix-server-mysql-62/62d11e2f033f108fb6a2529b)
+[6](https://www.reddit.com/r/zabbix/comments/1b976nw/help_with_zabbix_containers_using_podman_and/)
+[7](https://www.zabbix.com/forum/zabbix-troubleshooting-and-problems/475587-unable-to-get-snmp-traps-into-zabbix-server-mysql-using-containers)
+[8](https://www.initmax.com/wiki/installation-and-basic-usage-of-browser-item/)
+[9](https://bestmonitoringtools.com/tutorial-snmp-traps-on-zabbix/)
