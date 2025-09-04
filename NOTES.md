@@ -564,9 +564,11 @@ iperf Done.
 PC2:/#
 ```
 
-## The default `iperf3` server (`iperf3 -s`) can only handle one client test at a time per server process. It accepts a single client connection at once, so multiple simultaneous test sessions are not supported on the same port.
+## Iperf3 single-threaded 
 
-### Details:
+The default `iperf3` server (`iperf3 -s`) can only handle one client test at a time per server process. It accepts a single client connection at once, so multiple simultaneous test sessions are not supported on the same port.
+
+- Details:
 
 - `iperf3` server is single-threaded and allows just one test connection at a time on the listening port (default 5201).
 - The `--parallel` option applies to client-side streams (multiple streams inside one client test), but the server itself still handles just one client session at a time.
@@ -580,7 +582,7 @@ PC2:/#
 - Some users build load balancers or brokers to schedule multiple iperf3 tests, but this is outside of default iperf3 functionality.
 - `iperf2` supports multiple clients simultaneously, but has other limitations compared to `iperf3`.
 
-### Summary
+- Summary
 - **One iperf3 server process = one simultaneous client connection.**
 - Use multiple server processes on different ports to handle multiple tests in parallel.
 
