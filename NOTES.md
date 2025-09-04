@@ -198,6 +198,12 @@ mickm@mickm-Latitude-7410:~/git/zabbix-docker$
 ### Zabbix - Stop/start using docker compose
 
 ```bash
+docker compose -f ./docker-compose_v3_alpine_mysql_latest.yaml down
+```
+```bash
+docker compose -f ./docker-compose_v3_alpine_mysql_latest.yaml up -d
+```
+```bash
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker compose -f ./docker-compose_v3_alpine_mysql_latest.yaml down
 [+] Running 10/10
  ✔ Container zabbix-docker-zabbix-server-1           Removed                                                                                                                                                                                        0.7s 
