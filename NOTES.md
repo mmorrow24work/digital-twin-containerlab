@@ -269,8 +269,160 @@ default via 172.16.238.1 dev eth0
 172.19.0.0/16 dev eth3 scope link  src 172.19.0.4 
 d949ca9b1089:~$ exit
 exit
-mickm@mickm-Latitude-7410:~/git/zabbix-docker$ 
+mickm@mickm-Latitude-7410:~/git/zabbix-docker$
 ```
+## Zabbix agent - Verify package is installed
+
+```bash 
+mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$ docker exec -it clab-frr01-PC1 bash
+PC1:/# apk list
+WARNING: opening from cache https://dl-cdn.alpinelinux.org/alpine/v3.22/main: No such file or directory
+WARNING: opening from cache https://dl-cdn.alpinelinux.org/alpine/v3.22/community: No such file or directory
+alpine-baselayout-3.7.0-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
+alpine-baselayout-data-3.7.0-r0 x86_64 {alpine-baselayout} (GPL-2.0-only) [installed]
+alpine-keys-2.5-r0 x86_64 {alpine-keys} (MIT) [installed]
+alpine-release-3.22.1-r0 x86_64 {alpine-base} (MIT) [installed]
+apk-tools-2.14.9-r2 x86_64 {apk-tools} (GPL-2.0-only) [installed]
+bash-5.2.37-r0 x86_64 {bash} (GPL-3.0-or-later) [installed]
+brotli-libs-1.1.0-r2 x86_64 {brotli} (MIT) [installed]
+busybox-1.37.0-r18 x86_64 {busybox} (GPL-2.0-only) [installed]
+busybox-binsh-1.37.0-r18 x86_64 {busybox} (GPL-2.0-only) [installed]
+c-ares-1.34.5-r0 x86_64 {c-ares} (MIT) [installed]
+ca-certificates-bundle-20250619-r0 x86_64 {ca-certificates} (MPL-2.0 AND MIT) [installed]
+iperf3-3.19.1-r0 x86_64 {iperf3} (BSD-3-Clause-LBNL) [installed]
+iproute2-6.15.0-r0 x86_64 {iproute2} (GPL-2.0-or-later) [installed]
+iproute2-minimal-6.15.0-r0 x86_64 {iproute2} (GPL-2.0-or-later) [installed]
+iproute2-ss-6.15.0-r0 x86_64 {iproute2} (GPL-2.0-or-later) [installed]
+iproute2-tc-6.15.0-r0 x86_64 {iproute2} (GPL-2.0-or-later) [installed]
+iputils-20240905-r0 x86_64 {iputils} (BSD-3-Clause AND GPL-2.0-or-later) [installed]
+iputils-arping-20240905-r0 x86_64 {iputils} (BSD-3-Clause AND GPL-2.0-or-later) [installed]
+iputils-clockdiff-20240905-r0 x86_64 {iputils} (BSD-3-Clause AND GPL-2.0-or-later) [installed]
+iputils-ping-20240905-r0 x86_64 {iputils} (BSD-3-Clause AND GPL-2.0-or-later) [installed]
+iputils-tracepath-20240905-r0 x86_64 {iputils} (BSD-3-Clause AND GPL-2.0-or-later) [installed]
+libapk2-2.14.9-r2 x86_64 {apk-tools} (GPL-2.0-only) [installed]
+libcap2-2.76-r0 x86_64 {libcap} (BSD-3-Clause OR GPL-2.0-only) [installed]
+libcrypto3-3.5.1-r0 x86_64 {openssl} (Apache-2.0) [installed]
+libcurl-8.14.1-r1 x86_64 {curl} (curl) [installed]
+libelf-0.193-r0 x86_64 {elfutils} (GPL-3.0-or-later AND ( GPL-2.0-or-later OR LGPL-3.0-or-later )) [installed]
+libidn2-2.3.7-r0 x86_64 {libidn2} (GPL-2.0-or-later OR LGPL-3.0-or-later) [installed]
+libmnl-1.0.5-r2 x86_64 {libmnl} (LGPL-2.1-or-later) [installed]
+libncursesw-6.5_p20250503-r0 x86_64 {ncurses} (X11) [installed]
+libpcap-1.10.5-r1 x86_64 {libpcap} (BSD-3-Clause) [installed]
+libpsl-0.21.5-r3 x86_64 {libpsl} (MIT) [installed]
+libssl3-3.5.1-r0 x86_64 {openssl} (Apache-2.0) [installed]
+libunistring-1.3-r0 x86_64 {libunistring} (GPL-2.0-or-later OR LGPL-3.0-or-later) [installed]
+libxtables-1.8.11-r1 x86_64 {iptables} (GPL-2.0-or-later) [installed]
+musl-1.2.5-r10 x86_64 {musl} (MIT) [installed]
+musl-utils-1.2.5-r10 x86_64 {musl} (MIT AND BSD-2-Clause AND GPL-2.0-or-later) [installed]
+ncurses-terminfo-base-6.5_p20250503-r0 x86_64 {ncurses} (X11) [installed]
+net-snmp-5.9.4-r1 x86_64 {net-snmp} (Net-SNMP) [installed]
+net-snmp-agent-libs-5.9.4-r1 x86_64 {net-snmp} (Net-SNMP) [installed]
+net-snmp-libs-5.9.4-r1 x86_64 {net-snmp} (Net-SNMP) [installed]
+net-snmp-tools-5.9.4-r1 x86_64 {net-snmp} (Net-SNMP) [installed]
+nghttp2-libs-1.65.0-r0 x86_64 {nghttp2} (MIT) [installed]
+pcre2-10.43-r1 x86_64 {pcre2} (BSD-3-Clause) [installed]
+readline-8.2.13-r1 x86_64 {readline} (GPL-3.0-or-later) [installed]
+scanelf-1.3.8-r1 x86_64 {pax-utils} (GPL-2.0-only) [installed]
+softflowd-1.1.0-r0 x86_64 {softflowd} (BSD-2-Clause) [installed]
+ssl_client-1.37.0-r18 x86_64 {busybox} (GPL-2.0-only) [installed]
+zabbix-agent-7.2.11-r1 x86_64 {zabbix} (AGPL-3.0-only) [installed]
+zlib-1.3.1-r2 x86_64 {zlib} (Zlib) [installed]
+zstd-libs-1.5.7-r0 x86_64 {zstd} (BSD-3-Clause OR GPL-2.0-or-later) [installed]
+PC1:/# exit
+exit
+mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$ 
+```
+
+## Zabbix agent - test it's working and open to connections from the Zabbix server
+
+```bash
+mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$ docker exec -it clab-frr01-PC1 bash
+PC1:/# grep Server  /etc/zabbix/zabbix_agentd.conf
+### Option: Server
+#       Example: Server=127.0.0.1,192.168.1.0/24,::1,2001:db8::/32,zabbix.example.com
+# Server=
+Server=192.168.10.7
+### Option: ServerActive
+#       Server/proxy address is IP address or DNS name and optional port separated by colon.
+#               ServerActive=127.0.0.1:10051
+#               ServerActive=127.0.0.1:20051,zabbix.domain,[::1]:30051,::1,[12fc::1]
+#               ServerActive=zabbix.cluster.node1;zabbix.cluster.node2:20051;zabbix.cluster.node3
+#               ServerActive=zabbix.cluster.node1;zabbix.cluster.node2:20051,zabbix.cluster2.node1;zabbix.cluster2.node2,zabbix.domain
+# ServerActive=
+ServerActive=127.0.0.1
+#       all collected data to Zabbix Server or Proxy if the buffer is full.
+#       Maximum number of new lines the agent will send per second to Zabbix Server
+### Option: TLSServerCertIssuer
+# TLSServerCertIssuer=
+### Option: TLSServerCertSubject
+# TLSServerCertSubject=
+PC1:/#
+```
+## Zabbix agent - change server
+
+To configure a Zabbix agent so it can accept connections and send data to any Zabbix server IP, you need to:
+
+### 1. Modify the agent configuration file, usually:
+- `/etc/zabbix/zabbix_agentd.conf` for the classic agent
+- or `/etc/zabbix/zabbix_agent2.conf` for agent2
+
+### 2. Set the `Server` and `ServerActive` parameters as follows:
+- `Server` is a comma-separated list of IP addresses or hostnames of Zabbix servers or proxies allowed to connect to the agent (passive checks).
+- `ServerActive` is a list of servers to which the agent should send data (active checks).
+
+To allow any server IP, you can use `0.0.0.0/0` (whole IPv4) or not restrict this, but this is a **security risk**.
+
+Example:
+
+```ini
+Server=0.0.0.0/0
+ServerActive=0.0.0.0/0
+```
+
+Or specify multiple IPs:
+
+```ini
+Server=192.168.1.10,192.168.1.11
+ServerActive=192.168.1.10,192.168.1.11
+```
+
+### 3. Set `Hostname` parameter:
+- This should be the unique hostname the agent uses when registering or reporting to the server.
+- Ensure this hostname matches the host configured in the Zabbix frontend.
+
+### 4. Restart the Zabbix agent service to apply changes:
+```bash
+sudo systemctl restart zabbix-agent
+```
+
+***
+
+### Important security note:
+- Allowing `0.0.0.0/0` effectively lets any host communicate with the agent, which can expose monitored hosts to potential malicious access.
+- Ideally, restrict `Server` and `ServerActive` to specific trusted Zabbix server or proxy IPs/subnets.
+- Use firewalls and network segmentation to protect your agent endpoints.
+
+***
+
+### Summary:
+| Parameter     | Purpose                             | Example                       |
+|---------------|-----------------------------------|-------------------------------|
+| `Server`      | IP(s) allowed to connect (passive)| `0.0.0.0/0` or `192.168.1.10` |
+| `ServerActive`| IP(s) agent sends active checks to| `0.0.0.0/0` or `192.168.1.10` |
+| `Hostname`    | Unique hostname for the agent      | `myhost.example.com`           |
+
+For detailed steps and examples, see Zabbix agent configuration documentation and forum discussions.[1][2][4][8][9]
+
+[1](https://www.zabbix.com/forum/zabbix-troubleshooting-and-problems/47581-zabbix-agent-configuration)
+[2](https://www.devopsschool.com/blog/how-to-install-configure-zabbix-agent/)
+[3](https://kalpchobisa.hashnode.dev/step-by-step-guide-setting-up-a-zabbix-server-and-understanding-key-terminologies)
+[4](https://www.reddit.com/r/zabbix/comments/1kgsgga/how_should_i_configure_zabbix_agent_when_i_have/)
+[5](https://www.zabbix.com/forum/zabbix-troubleshooting-and-problems/440691-how-to-change-zabbix-server-ip-address)
+[6](https://www.zabbix.com/documentation/current/en/manual/concepts/agent)
+[7](https://www.zabbix.com/forum/zabbix-help/454938-zabbix-configuration-change-server-ip-address)
+[8](https://gist.github.com/devops-school/64a6b4a8aca5461c48d11d11fbfa901c)
+[9](https://www.zabbix.com/forum/zabbix-help/450578-monitor-agent-host-through-2-ip-addresses)
+
 
 ### Zabbix web UI - [Zabbix - localhost](http://localhost)
 
