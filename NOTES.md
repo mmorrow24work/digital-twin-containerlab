@@ -1,7 +1,5 @@
-# NOTES
-
-## Zabbix
-### SQL backup in Zabbix
+# Zabbix
+## SQL backup in Zabbix
 
 ```bash
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$ docker exec -it clab-frr01-PC2 bash
@@ -16,7 +14,7 @@ exit
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
 ```
 
-### SQL restore in Zabbix
+## SQL restore in Zabbix
 
 ```bash
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$ docker exec -it clab-frr01-PC2 bash
@@ -30,7 +28,7 @@ exit
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
 ```
 
-### Containerlab - mounted folders config
+## Containerlab - mounted folders config
 
 ```yml
 
@@ -49,7 +47,7 @@ mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
         - PC2/home:/home
 ```
 
-### Containerlab - mounted folders from host
+## Containerlab - mounted folders from host
 
 ```bash
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$ ls -l
@@ -71,7 +69,7 @@ total 28096
 mmorrow24work@containerlab-gce-1-0:~/containerlab/lab-examples/frr01$
 ```
 
-### Zabbix - Install using docker compose
+## Zabbix - Install using docker compose
 
 ```bash
 mickm@mickm-Latitude-7410:~/git$ git clone https://github.com/zabbix/zabbix-docker.git
@@ -169,7 +167,7 @@ kathara/quagga                  latest              62dd101dfa28   23 months ago
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$
 ```
 
-### Zabbix - Stop/start using docker compose
+## Zabbix - Stop/start using docker compose
 
 ```bash
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker compose -f ./docker-compose_v3_alpine_mysql_latest.yaml down
@@ -200,7 +198,7 @@ mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker compose -f ./docker-compos
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ 
 ```
 
-### Zabbix - inside the container
+## Zabbix - inside the container
 
 ```bash
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ docker ps
@@ -246,9 +244,9 @@ exit
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$ 
 ```
 
-### Zabbix web UI - [Zabbix - localhost](http://localhost)
+## Zabbix web UI - [Zabbix - localhost](http://localhost)
 
-### Zabbix environment variables
+## Zabbix environment variables
 
 ```bash
 mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ ls -al
@@ -295,7 +293,7 @@ zabbix
 mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ 
 ```
 
-### Zabbix - Install using podman-compose 
+## Zabbix - Install using podman-compose 
 
 Although using podman and podman-compose might be the right way to go, it didn't work first time for me - so I decided to park this to avoid getting pulled down yet another rabbit hole !!
 
@@ -314,7 +312,7 @@ compose.yaml                        docker-compose_v3_alpine_pgsql_latest.yaml  
 mickm@mickm-Latitude-7410:~/git/zabbix-docker$
 ```
 
-The error message:
+### The error message:
 
 ```
 unable to get image 'zabbix/zabbix-web-nginx-mysql:alpine-7.4-latest': Cannot connect to the Docker daemon at unix:///run/user/1000/podman/podman.sock. Is the docker daemon running?
@@ -322,7 +320,7 @@ unable to get image 'zabbix/zabbix-web-nginx-mysql:alpine-7.4-latest': Cannot co
 
 indicates that when running `podman compose`, the system is actually delegating to the Docker Compose plugin (`/usr/libexec/docker/cli-plugins/docker-compose`) which tries to connect to a Docker daemon socket that isn't running or accessible for Podman.
 
-Why this happens:
+### Why this happens:
 
 - `podman compose` is a thin wrapper that calls an external Compose provider.
 - By default on your system, the Docker Compose CLI is installed and is taking precedence.
@@ -331,7 +329,7 @@ Why this happens:
 
 ***
 
-How to fix this for Podman Compose usage:
+### How to fix this for Podman Compose usage:
 
 1. **Use the native Podman Compose** (a separate tool):
    - Install `podman-compose` (the Python-based tool designed for Podman).
@@ -357,7 +355,7 @@ How to fix this for Podman Compose usage:
 
 ***
 
-Summary
+### Summary
 
 - On your system, `podman compose` is calling Docker Compose CLI, which requires a Docker daemon.
 - Unless you configure or enable Podman’s socket as Docker socket, `podman compose` won't work smoothly.
