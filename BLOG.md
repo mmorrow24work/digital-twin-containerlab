@@ -1,12 +1,10 @@
 # 2025/09/02
 
 * After spending several weeks using Kathara I switched over to Containerlab for the following reasons:
-
-1. access to a wide range on containers and VM's from Nokia that will allow us to core and edge of NRTS2 / NRTS3 network
-1. better documentation, ongoing support from Nokia and other vendors
-1. more features
-
-Note: The containerized Service Router Simulator, known as SR-SIM, is a cloud-native version of the SR OS software that runs on hardware platforms. The image can be downloaded from the [Nokia Support Portal](https://customer.nokia.com/support/s/) and requires an active SR-SIM license to operate. I have requested this from Nokia [SROS vSIM license from Nokia - uuidgen email](https://github.com/mmorrow24work/digital-twin-containerlab/issues/1)
+- Access to a wide range on containers and VM's from Nokia that will allow us to core and edge of NRTS2 / NRTS3 network
+- Better documentation, ongoing support from Nokia and other vendors
+- More features
+- Note: The containerized Service Router Simulator, known as SR-SIM, is a cloud-native version of the SR OS software that runs on hardware platforms. The image can be downloaded from the [Nokia Support Portal](https://customer.nokia.com/support/s/) and requires an active SR-SIM license to operate. I have requested this from Nokia [SROS vSIM license from Nokia - uuidgen email](https://github.com/mmorrow24work/digital-twin-containerlab/issues/1)
 
 * I worked on creating a custom image to [create FRR image with SNMP and AgentX protocol support](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/frr-snmp.md)
 
