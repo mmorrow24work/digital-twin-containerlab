@@ -6,9 +6,7 @@ I started off using Kathara but now I’ve moved on to Containerlab – which is
 
 At the same time I am also learning how to use GitHub, Docker, AI, and Azure.
 
-I'm using [ISSUES](https://github.com/mmorrow24work/digital-twin-containerlab/issues) to track progress and capture requirements.
-
-I'm using this [BLOG](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/BLOG.md) as a blog for now. 
+I'm using [ISSUES](https://github.com/mmorrow24work/digital-twin-containerlab/issues) to track progress and capture requirements, and I'm using this [BLOG](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/BLOG.md) to record my progress for now. 
 
 I will be using AI as much as possible to accelerate things - here's an example of my interactions with [claude.ai](https://claude.ai/) - see [frr-snmp README](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/docker_custom_image/frr-snmp/readme.md)
 
