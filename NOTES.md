@@ -294,7 +294,8 @@ root
 zabbix
 mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ 
 ```
-### Zabbix - Install using podman 
+
+### Zabbix - Install using podman-compose 
 
 Although using podman and podman-compose might be the right way to go, it didn't work first time for me - so I decided to park this to avoid getting pulled down yet another rabbit hole !!
 
@@ -321,7 +322,8 @@ unable to get image 'zabbix/zabbix-web-nginx-mysql:alpine-7.4-latest': Cannot co
 
 indicates that when running `podman compose`, the system is actually delegating to the Docker Compose plugin (`/usr/libexec/docker/cli-plugins/docker-compose`) which tries to connect to a Docker daemon socket that isn't running or accessible for Podman.
 
-### Why this happens:
+Why this happens:
+
 - `podman compose` is a thin wrapper that calls an external Compose provider.
 - By default on your system, the Docker Compose CLI is installed and is taking precedence.
 - Docker Compose expects a Docker daemon which is not running because Podman works daemonless.
@@ -329,7 +331,7 @@ indicates that when running `podman compose`, the system is actually delegating 
 
 ***
 
-### How to fix this for Podman Compose usage:
+How to fix this for Podman Compose usage:
 
 1. **Use the native Podman Compose** (a separate tool):
    - Install `podman-compose` (the Python-based tool designed for Podman).
@@ -355,7 +357,8 @@ indicates that when running `podman compose`, the system is actually delegating 
 
 ***
 
-### Summary
+Summary
+
 - On your system, `podman compose` is calling Docker Compose CLI, which requires a Docker daemon.
 - Unless you configure or enable Podman’s socket as Docker socket, `podman compose` won't work smoothly.
 - For true Podman Compose usage, install and use the separate `podman-compose` tool, or start Podman's socket service.
