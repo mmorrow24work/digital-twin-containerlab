@@ -375,6 +375,71 @@ You are on the latest version (0.69.3)
 ╰────────────────────┴─────────────────────────────────┴─────────┴───────────────────╯
 mickm@mickm-Latitude-7410:~/git/containerlab/lab-examples/frr01$
 ```
+## Zabbix agent
+
+To configure a Zabbix agent so it can accept connections and send data to any Zabbix server IP, you need to:
+
+### 1. Modify the agent configuration file, usually:
+- `/etc/zabbix/zabbix_agentd.conf` for the classic agent
+- or `/etc/zabbix/zabbix_agent2.conf` for agent2
+
+### 2. Set the `Server` and `ServerActive` parameters as follows:
+- `Server` is a comma-separated list of IP addresses or hostnames of Zabbix servers or proxies allowed to connect to the agent (passive checks).
+- `ServerActive` is a list of servers to which the agent should send data (active checks).
+
+To allow any server IP, you can use `0.0.0.0/0` (whole IPv4) or not restrict this, but this is a **security risk**.
+
+Example:
+
+```ini
+Server=0.0.0.0/0
+ServerActive=0.0.0.0/0
+```
+
+Or specify multiple IPs:
+
+```ini
+Server=192.168.1.10,192.168.1.11
+ServerActive=192.168.1.10,192.168.1.11
+```
+
+### 3. Set `Hostname` parameter:
+- This should be the unique hostname the agent uses when registering or reporting to the server.
+- Ensure this hostname matches the host configured in the Zabbix frontend.
+
+### 4. Restart the Zabbix agent service to apply changes:
+```bash
+sudo systemctl restart zabbix-agent
+```
+
+***
+
+### Important security note:
+- Allowing `0.0.0.0/0` effectively lets any host communicate with the agent, which can expose monitored hosts to potential malicious access.
+- Ideally, restrict `Server` and `ServerActive` to specific trusted Zabbix server or proxy IPs/subnets.
+- Use firewalls and network segmentation to protect your agent endpoints.
+
+***
+
+### Summary:
+| Parameter     | Purpose                             | Example                       |
+|---------------|-----------------------------------|-------------------------------|
+| `Server`      | IP(s) allowed to connect (passive)| `0.0.0.0/0` or `192.168.1.10` |
+| `ServerActive`| IP(s) agent sends active checks to| `0.0.0.0/0` or `192.168.1.10` |
+| `Hostname`    | Unique hostname for the agent      | `myhost.example.com`           |
+
+For detailed steps and examples, see Zabbix agent configuration documentation and forum discussions.[1][2][4][8][9]
+
+[1](https://www.zabbix.com/forum/zabbix-troubleshooting-and-problems/47581-zabbix-agent-configuration)
+[2](https://www.devopsschool.com/blog/how-to-install-configure-zabbix-agent/)
+[3](https://kalpchobisa.hashnode.dev/step-by-step-guide-setting-up-a-zabbix-server-and-understanding-key-terminologies)
+[4](https://www.reddit.com/r/zabbix/comments/1kgsgga/how_should_i_configure_zabbix_agent_when_i_have/)
+[5](https://www.zabbix.com/forum/zabbix-troubleshooting-and-problems/440691-how-to-change-zabbix-server-ip-address)
+[6](https://www.zabbix.com/documentation/current/en/manual/concepts/agent)
+[7](https://www.zabbix.com/forum/zabbix-help/454938-zabbix-configuration-change-server-ip-address)
+[8](https://gist.github.com/devops-school/64a6b4a8aca5461c48d11d11fbfa901c)
+[9](https://www.zabbix.com/forum/zabbix-help/450578-monitor-agent-host-through-2-ip-addresses)
+
 
 ## Containerlab - stop lab
 
