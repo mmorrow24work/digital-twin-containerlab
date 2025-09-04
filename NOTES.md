@@ -283,5 +283,63 @@ root
 zabbix
 mickm@mickm-Latitude-7410:~/git/zabbix-docker/env_vars$ 
 ```
+### Zabbix - Install using podman compose
+
+1. create your jkdwc
+2. 
+```yml
+version: '3.8'
+
+services:
+  zabbix-postgres:
+    image: postgres:16.4
+    container_name: zabbix-postgres
+    environment:
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: p0dm@nr0cks
+      POSTGRES_DB: zabbix
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - /opt/zabbix/data:/var/lib/postgresql/data
+    networks:
+      zabbix-net:
+    restart: unless-stopped
+
+  zabbix-server-pgsql:
+    image: zabbix/zabbix-server-pgsql:alpine-7.0-latest
+    container_name: zabbix-server-pgsql
+    environment:
+      DB_SERVER_HOST: zabbix-postgres
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: p0dm@nr0cks
+      POSTGRES_DB: zabbix
+    ports:
+      - "10051:10051"
+    networks:
+      zabbix-net:
+    restart: unless-stopped
+
+  zabbix-web-nginx-pgsql:
+    image: zabbix/zabbix-web-nginx-pgsql:alpine-7.0-latest
+    container_name: zabbix-web-ui
+    environment:
+      ZBX_SERVER_HOST: zabbix-server-pgsql
+      ZBX_SERVER_PORT: 10051
+      DB_SERVER_HOST: zabbix-postgres
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: p0dm@nr0cks
+      POSTGRES_DB: zabbix
+      PHP_TZ: Europe/London
+    ports:
+      - "8080:8080"
+    networks:
+      zabbix-net:
+    restart: unless-stopped
+
+networks:
+  zabbix-net:
+    driver: bridge
+```
+
 
 
