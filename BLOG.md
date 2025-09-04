@@ -33,3 +33,5 @@ I'm not sure how best to blog yet - the recommended options are :
 * [Stop Using Docker. Use Open Source Instead](https://www.youtube.com/watch?v=Z5uBcczJxUY&t) - advises us to use Podman ( opensource alternative to Docker ) instead of Docker Compose ( which apparently not free for commercial use )
 * [Zabbix Installation from containers](https://www.zabbix.com/documentation/current/en/manual/installation/containers) - shows us how to use Docker Compose or Podman ( opensource alternative to Docker )
 * I did some tests with docker compose or podman compose but I gave up on podman because it didn't work first time - see [NOTES](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md)
+* Eventually managed to get SNMP traps working using Zabbix container deployment ... well, kind of - they are not dhowing up in the UI - but I do see them in the logs - see [docker-compose/README](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/docker-compose/README.md)
+* End day 00.00
