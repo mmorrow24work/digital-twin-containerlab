@@ -13,7 +13,6 @@ I'm not sure how best to blog yet - the recommended options are :
 - Better documentation, ongoing support from Nokia and other vendors
 - More features
 - Note: The containerized Service Router Simulator, known as SR-SIM, is a cloud-native version of the SR OS software that runs on hardware platforms. The image can be downloaded from the [Nokia Support Portal](https://customer.nokia.com/support/s/) and requires an active SR-SIM license to operate. I have requested this from Nokia [SROS vSIM license from Nokia - uuidgen email](https://github.com/mmorrow24work/digital-twin-containerlab/issues/1)
-
 * I worked on creating a custom image to [create FRR image with SNMP and AgentX protocol support](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/frr-snmp.md)
 
 # 2025/09/03
@@ -26,12 +25,17 @@ I'm not sure how best to blog yet - the recommended options are :
 * Worked on getting SQL backup and restore to work in Zabbix - see [NOTES](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md)
 * End day 22.00
  
-# 2025/09/03
+# 2025/09/04
 
 * Start day 07.00
-* Had a re-think ! Instead of creating custom images for Zabbix and including the Zabbix container in my containerlab network - switch to the standard docker containers and attach them to my containerlab networks
+* Had a re-think ! Instead of creating custom images for Zabbix and including the Zabbix container in my containerlab network - I switched to the standard docker containers and attached them to my containerlab networks
 * [Stop Using Docker. Use Open Source Instead](https://www.youtube.com/watch?v=Z5uBcczJxUY&t) - advises us to use Podman ( opensource alternative to Docker ) instead of Docker Compose ( which apparently not free for commercial use )
 * [Zabbix Installation from containers](https://www.zabbix.com/documentation/current/en/manual/installation/containers) - shows us how to use Docker Compose or Podman ( opensource alternative to Docker )
 * I did some tests with docker compose or podman compose but I gave up on podman because it didn't work first time - see [NOTES](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md)
+* Worked on merging Github repo's - still not sure what the best approach is
+* After lots of trial and error... switching to the standard docker containers is definately the best way forward for several reasons
+- Images are updated and maintained by Zabbix - not by us !
+- Zabbix containers are independant from the Containerlab containers, which has several benefits inc. not having to backup and restore the SQL database eveytime we stop / start the Containerlab network
+* Worked on adding SNMP and Zabbix Agent support to the container images I'm using with Containerlab - got both working, and then managed to break them both so I will need to back track and fix both
 * Eventually managed to get SNMP traps working using Zabbix container deployment ... well, kind of - they are not dhowing up in the UI - but I do see them in the logs - see [docker-compose/README](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/docker-compose/README.md)
 * End day 00.00
