@@ -46,7 +46,6 @@ For the record - here are some links to various resources, I will be using and r
 Note: The containerized Service Router Simulator, known as SR-SIM, is a cloud-native version of the SR OS software that runs on hardware platforms. The image can be downloaded from the [Nokia Support Portal](https://customer.nokia.com/support/s/) and requires an active SR-SIM license to operate. I have requested this from Nokia [SROS vSIM license from Nokia - uuidgen email](https://github.com/mmorrow24work/digital-twin-containerlab/issues/1)
 
 * I worked on creating a custom image to [create FRR image with SNMP and AgentX protocol support](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/frr-snmp.md)
-* 
 
 ## Blog - 2025/09/03
 
@@ -64,6 +63,6 @@ Note: The containerized Service Router Simulator, known as SR-SIM, is a cloud-na
 * Had a re-think ! Instead of creating custom images for Zabbix and including the Zabbix container in my containerlab network - switch to the standard docker containers and attach them to my containerlab networks
 * [Stop Using Docker. Use Open Source Instead](https://www.youtube.com/watch?v=Z5uBcczJxUY&t) - advises us to use Podman ( opensource alternative to Docker ) instead of Docker Compose ( which apparently not free for commercial use )
 * [Zabbix Installation from containers](https://www.zabbix.com/documentation/current/en/manual/installation/containers) - shows us how to use Docker Compose or Podman ( opensource alternative to Docker )
-* I did some tests with Docker Compose or Podman - see [NOTES](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md)
+* I did some tests with docker compose or podman compose but I gave up on podman because it didn't work first time - see [NOTES](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/NOTES.md)
 
 
