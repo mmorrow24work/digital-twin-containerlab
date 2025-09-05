@@ -39,3 +39,14 @@ I'm not sure how best to blog yet - the recommended options are :
 * Worked on adding SNMP and Zabbix Agent support to the container images I'm using with Containerlab - got both working, and then managed to break them both so I will need to back track and fix both
 * Eventually managed to get SNMP traps working using Zabbix container deployment ... well, kind of - they are not dhowing up in the UI - but I do see them in the logs - see [docker-compose/README](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/docker-compose/README.md)
 * End day 00.00
+
+# 2025/09/04
+
+* Start day 08.45
+* First job is to fix my Alpine_PC and FRR containers to get SNMP and Zabbix Agent support working again
+* Prep for call with Steve & Paul at 13.00 - my actions from last from last week were to focus on these 4 requirements:
+- Simulate sending / receiving SNMP traps using Actelis MIB IOD's - but also generic link up / down SNMP traps
+- Look at how we can automate bulk software upgrades - e.g. using Ansible, Event-Driven Ansible (EDA) using webhooks ???
+- Look for ways to simulate L1 outages / cable cuts so we don't have to down an router / switch / camera network interface
+- Work with Containerlab to manage Nokia SR-OS and SR-LINUX nodes
+- 
