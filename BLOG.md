@@ -1,10 +1,10 @@
 I'm not sure how best to blog yet - the recommended options are :
 
-1. Start simple with README for essentials.
-1. Use Wiki if you want quick multipage docs/blog with minimal setup - I found that to use the Wiki feature on a private repo needs GitHub PRO ( Note : 2025/09/03 ) 
-1. For professional blogging, invest in GitHub Pages with Jekyll/Hugo.
-1. Keep blog and docs content in source control to track history.
-1. Link blog prominently from README and Wiki for ease of discovery.
+1. Start simple with README for essentials
+2. Use Wiki if you want quick multipage docs/blog with minimal setup - I found that to use the Wiki feature on a private repo needs GitHub PRO ( Note : 2025/09/03 )
+3. For professional blogging, invest in GitHub Pages with Jekyll/Hugo.
+4. Keep blog and docs content in source control to track history.
+5. Link blog prominently from README and Wiki for ease of discovery.
   
 # 2025/09/02
 
@@ -45,8 +45,8 @@ I'm not sure how best to blog yet - the recommended options are :
 * Start day 08.45
 * First job is to fix my Alpine_PC and FRR containers to get SNMP and Zabbix Agent support working again
 * Prep for call with Steve & Paul at 13.00 - my actions from last from last week were to focus on these 4 requirements:
-- Simulate sending / receiving SNMP traps using Actelis MIB IOD's - but also generic link up / down SNMP traps
-- Look at how we can automate bulk software upgrades - e.g. using Ansible, Event-Driven Ansible (EDA) using webhooks ???
-- Look for ways to simulate L1 outages / cable cuts so we don't have to down an router / switch / camera network interface
-- Work with Containerlab to manage Nokia SR-OS and SR-LINUX nodes
-- 
+1. Simulate sending / receiving SNMP traps using Actelis MIB IOD's - but also generic link up / down SNMP traps
+2. Look at how we can automate bulk software upgrades - e.g. using Ansible, Event-Driven Ansible (EDA) using webhooks ???
+3. Look for ways to simulate L1 outages / cable cuts so we don't have to down an router / switch / camera network interface
+4. Work with Containerlab to manage Nokia SR-OS and SR-LINUX nodes
+* 
