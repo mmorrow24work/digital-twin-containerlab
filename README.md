@@ -30,3 +30,4 @@ For the record - here are some links to various resources, I will be using and r
 
 
 
+<img width="785" height="991" alt="Screenshot 2025-09-05 at 09-22-33 Twins (1988)" src="https://github.com/user-attachments/assets/87b33182-0bee-45e7-a428-33b1cce3940f" />
