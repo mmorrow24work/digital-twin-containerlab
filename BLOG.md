@@ -40,7 +40,7 @@ I'm not sure how best to blog yet - the recommended options are :
 * Eventually managed to get SNMP traps working using Zabbix container deployment ... well, kind of - they are not dhowing up in the UI - but I do see them in the logs - see [docker-compose/README](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/docker-compose/README.md)
 * End day 00.00
 
-# 2025/09/04
+# 2025/09/05
 
 * Start day 08.45
 * First job is to fix my Alpine_PC and FRR containers to get SNMP and Zabbix Agent support working again
